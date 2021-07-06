@@ -206,10 +206,10 @@
     $('.request').on('click', function (e) 
     {
       e.preventDefault();
+      $("#secondform").empty();
+      $("#client_type").val("");
+      $("#additionalTr").empty();
       var id = $(this).closest("#transactions").find("#account_code").val();
-      //var transtype = $(this).closest("#transactions").find("#type").text();
-      //var transamount = $(this).closest("#transactions").find("#amount").text();
-      //var transoffice = $(this).closest("#transactions").find("#office").text();
       
       $.ajax({
         type: 'POST',
@@ -314,11 +314,25 @@
       {
         if(type == "External2")
         {
-          $("#secondform").append("<div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='firstname' class='col-sm-3 control-label'>Firstname:</label><div class='col-sm-9'><input class='form-control' type='text' id='firstname' name='firstname' placeholder='Enter your firstname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='middlename' class='col-sm-3 control-label'>Middlename:</label><div class='col-sm-9'><input class='form-control' type='text' id='middlename' name='middlename' placeholder='Enter your middlename here' autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required autocomplete='off'></div></div></div><div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>")
+          if(transNoOfCopy == "YES")
+          {
+            $("#secondform").append("<div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='firstname' class='col-sm-3 control-label'>Firstname:</label><div class='col-sm-9'><input class='form-control' type='text' id='firstname' name='firstname' placeholder='Enter your firstname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='middlename' class='col-sm-3 control-label'>Middlename:</label><div class='col-sm-9'><input class='form-control' type='text' id='middlename' name='middlename' placeholder='Enter your middlename here' autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='no_of_copies' class='col-sm-3 control-label'>No. Of Copy(ies):</label><div class='col-sm-9'><input class='form-control' type='number' min='1' id='no_of_copies' name='no_of_copies' placeholder='Enter number of copy(ies) here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
+          }
+          else
+          {
+            $("#secondform").append("<div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='firstname' class='col-sm-3 control-label'>Firstname:</label><div class='col-sm-9'><input class='form-control' type='text' id='firstname' name='firstname' placeholder='Enter your firstname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='middlename' class='col-sm-3 control-label'>Middlename:</label><div class='col-sm-9'><input class='form-control' type='text' id='middlename' name='middlename' placeholder='Enter your middlename here' autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required autocomplete='off'></div></div></div><div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
+          }
         }
         else if(type == "External1")
         {
-          $("#secondform").append("<div class='form-group'><div class='row'><label for='externalno' class='col-sm-3 control-label'>Requestor #:</label><div class='col-sm-9'><input class='form-control' type='text' id='externalno' name='externalno' placeholder='Enter your requestor number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>")
+          if(transNoOfCopy == "YES")
+          {
+            $("#secondform").append("<div class='form-group'><div class='row'><label for='externalno' class='col-sm-3 control-label'>Requestor #:</label><div class='col-sm-9'><input class='form-control' type='text' id='externalno' name='externalno' placeholder='Enter your requestor number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='no_of_copies' class='col-sm-3 control-label'>No. Of Copy(ies):</label><div class='col-sm-9'><input class='form-control' type='number' min='1' id='no_of_copies' name='no_of_copies' placeholder='Enter number of copy(ies) here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
+          }
+          else
+          {
+            $("#secondform").append("<div class='form-group'><div class='row'><label for='externalno' class='col-sm-3 control-label'>Requestor #:</label><div class='col-sm-9'><input class='form-control' type='text' id='externalno' name='externalno' placeholder='Enter your requestor number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
+          }
         }
         else if(type == "Student")
         {
@@ -335,7 +349,14 @@
         }
         else
         {
-          $("#secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>")
+          if(transNoOfCopy == "YES")
+          {
+            $("#secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><label for='no_of_copies' class='col-sm-3 control-label'>No. Of Copy(ies):</label><div class='col-sm-9'><input class='form-control' type='number' min='1' id='no_of_copies' name='no_of_copies' placeholder='Enter number of copy(ies) here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
+          }
+          else
+          {
+            $("#secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
+          }
         }
       }
       else
@@ -405,12 +426,12 @@
       if($("#use_pnu_email").is(':checked'))
       {
         $("#email").attr("readonly", "true");
-        $("#email").attr("placeholder", "Your PNU Email will be automatically loaded!");
+        $("#email").attr("value", "Your PNU Email will be automatically loaded!");
       }
       else
       {
         $("#email").removeAttr("readonly");
-        $("#email").attr("placeholder", "Enter your email here");
+        $("#email").removeAttr("value");
       }
           
     });
