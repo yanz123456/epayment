@@ -2,10 +2,10 @@
 	$timezone = 'Asia/Manila';
 	date_default_timezone_set($timezone);
 
-	$server = "192.168.175.8";
+	$server = "localhost";
     $database = "db_transactionportal";
-    $username = "paymentsystem";
-    $password = "pnu_2k20***";
+    $username = "root";
+    $password = "";
 
 	$conn = new mysqli($server, $username, $password, $database);
 
@@ -13,10 +13,10 @@
 	    die("Connection failed: " . $conn->connect_error);
 	}
 
-	$server1 = "192.168.175.15";
-    $database1 = "pnuID";
-    $username1 = "appointment";
-    $password1 = "pnu_2k21***";
+	$server1 = "localhost";
+    $database1 = "db_transactionportal";
+    $username1 = "root";
+    $password1 = "";
 
 	$pwebss = new mysqli($server1, $username1, $password1, $database1);
 	if ($pwebss->connect_error) {
