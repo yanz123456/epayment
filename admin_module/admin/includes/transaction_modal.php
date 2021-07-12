@@ -13,7 +13,7 @@
                         <label for="title" class="col-sm-3 control-label">Amount Type:</label>
                         <div class="col-sm-9">
                             <select class="form-control" id="trans_type" name="trans_type" required>
-                                <option disabled selected hidden value="">-- Select Transaction Type --</option>
+                                <option disabled selected hidden value="">-- Select Amount Type --</option>
                                 <option value="Fixed">Fixed</option>
                                 <option value="Fixed With Unit">Fixed With Unit</option>
                                 <option value="Variable">Variable</option>

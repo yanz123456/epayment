@@ -15,7 +15,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="addrequest.php?action=add" method="POST">
+        <form action="addrequest.php?action=add" id="transactionForm" method="POST">
           <div class="form-group">
             <div class="row">
               <label for="title" class="col-sm-3 control-label">Transaction:</label>
@@ -65,7 +65,8 @@
       </div>
       <div class="modal-footer">
         <button id="showConfirmation" type="button" class="btn btn-danger">Show Temporary Confirmation</button>
-        <button type="submit" class="btn btn-primary">Proceed</button>
+        <button id="proceedButton" type="button" class="btn btn-primary">Proceed</button>
+        <!-- <button type="submit" class="btn btn-primary">Proceed</button> -->
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
       </form>
