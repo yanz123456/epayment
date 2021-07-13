@@ -454,18 +454,29 @@
     
     $("#proceedButton").on('click', function(e)
     {
+      var map = new Map();
       if($("#client_type")[0].checkValidity())
       {
         if($("#transactionForm")[0].checkValidity())
         {
           if($("#transCategory").val() == "Document")
           {
-            
+            if($("#client_type").val() == "Student")
+            {
+              if($("#use_pnu_email").is(':checked'))
+              {
+                $("#transactionForm input[type=text], #transactionForm input[type=email], #transactionFrom input[type=number], #transactionForm textarea, #transactionForm select").each(function()
+                {
+                  map.set($(this).attr("id"), $(this).val());
+                });
+                console.log(map);
+              }
+            }
           }
         }
         else
         {
-          $("#transactionForm")[0].reportValidity()
+          $("#transactionForm")[0].reportValidity();
         }
       }
       else
@@ -478,7 +489,7 @@
       if($("#use_pnu_email").is(':checked'))
       {
         $("#email").attr("readonly", "true");
-        $("#email").attr("value", "Your PNU Email will be automatically loaded!");
+        $("#email").attr("value", "Use PNU Email instead");
       }
       else
       {
