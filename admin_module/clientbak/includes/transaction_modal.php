@@ -8,20 +8,7 @@
             	<h4 class="modal-title"><b>Add New Transaction</b></h4>
           	</div>
           	<div class="modal-body">
-            	<form class="form-horizontal" method="POST" action="transaction_verify.php?action=add" id="addtransactionform">
-                    <div class="form-group">
-                        <label for="title" class="col-sm-3 control-label">Amount Type:</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="trans_type" name="trans_type" required>
-                                <option disabled selected hidden value="">-- Select Amount Type --</option>
-                                <option value="Fixed">Fixed</option>
-                                <option value="Fixed With Unit">Fixed With Unit</option>
-                                <option value="Variable">Variable</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="dynamicinputs">
-                    </div>
+            	<form class="form-horizontal" method="POST" action="transaction_verify.php?action=add">
                     <div class="form-group">
                         <label for="title" class="col-sm-3 control-label">Account Code:</label>
                         <div class="col-sm-9">
@@ -34,7 +21,11 @@
                             <input type="text" class="form-control" id="description" name="description" required autocomplete="off">
                         </div>
                     </div>
-                    <div id="dynamicinputs2">
+                    <div class="form-group">
+                        <label for="title" class="col-sm-3 control-label">Amount:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="amount" name="amount" required autocomplete="off">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="title" class="col-sm-3 control-label">Office:</label>
@@ -73,7 +64,7 @@
           	<div class="modal-header">
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
               		<span aria-hidden="true">&times;</span></button>
-            	<h4 class="modal-title"><b>Edit Transaction</b></h4>
+            	<h4 class="modal-title"><b>Add New Transaction</b></h4>
           	</div>
           	<div class="modal-body">
             	<form class="form-horizontal" method="POST" action="transaction_verify.php?action=edit">

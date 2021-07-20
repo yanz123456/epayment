@@ -2,90 +2,42 @@
 	session_start();
 	include 'includes/conn.php';
 
-    $action = $_GET["action"];
+	if(isset($_POST['login'])){
+		$username = $_POST['username'];
+		$password = $_POST['password'];
+		$password = md5($password);
 
-    switch($action)
-    {
-        case 'check':
-            $client_type = mysqli_real_escape_string($conn, $_POST['cyt_client_type']);
-            if($client_type == "Student")
-            {
-                $studno = mysqli_real_escape_string($conn, $_POST['studno']);
-                $lname = mysqli_real_escape_string($conn, $_POST['lname']);
+		$sql = "SELECT * FROM tbl_users WHERE username = '$username' AND password = '$password'";
+		$query = $conn->query($sql);
 
-                $sql = "SELECT StudNo, LName, GName, MName FROM vStudInfo WHERE StudNo = '$studno' AND LName = '$lname' LIMIT 1";
-                $result = mysqli_query($pwebss, $sql) or die(mysqli_error($pwebss));
-                if($result->num_rows > 0)
-                {
-                    $_SESSION["logged_in"] = "YES";
-                    $_SESSION['client'] = $studno;
-                    $_SESSION['client_type'] = 'Student';
+		if($query->num_rows < 1){
+			$_SESSION['error'] = 'Unable to find your account. Please try again.';
+			header('location: index.php');
+		}
+		else
+		{
+			$row = $query->fetch_assoc();
+			$_SESSION['login_id'] = $row['id'];
+			$_SESSION['username'] = $row['username'];
+			$_SESSION["admintype"] = $row["type"];
 
-                    echo "<script type='text/javascript'>";
-					echo "alert('Verification Successful!');";
-					echo "window.location = ('index.php');";
-					echo "</script>";
-                }
-                else
-                {
-                    echo "<script type='text/javascript'>";
-                    echo "alert('Unable to verify student details! Please re-check your details!');";
-                    echo "window.location = ('index.php');";
-                    echo "</script>";
-                }
-            }
-            elseif($client_type == "Applicant")
-            {
-                $studno = mysqli_real_escape_string($conn, $_POST['applicantno']);
-                $lname = mysqli_real_escape_string($conn, $_POST['lname']);
+			if($_SESSION["admintype"] == "office")
+			{
+				$sql = "SELECT id as office_id FROM tbl_offices WHERE description = '". $_SESSION['username'] ."'";
+				$query = $conn->query($sql);
+				$row = $query->fetch_assoc();
+				$_SESSION["office_id"] = $row["office_id"];
+			}
 
-                $sql = "SELECT AppNo, LName, GName, MName FROM tbl_appview WHERE AppNo = '$studno' AND LName = '$lname' LIMIT 1";
-                $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-                if($result->num_rows > 0)
-                {
-                    $_SESSION["logged_in"] = "YES";
-                    $_SESSION['client'] = $studno;
-                    $_SESSION['client_type'] = 'Applicant';
+			echo "<script type='text/javascript'>";
+			echo "alert('Login Successful!');";
+			echo "window.location = 'index.php';";
+			echo "</script>";
+		}
+	}
+	else{
+		$_SESSION['error'] = 'Input admin credentials first';
+	}
 
-                    echo "<script type='text/javascript'>";
-					echo "alert('Verification Successful!');";
-					echo "window.location = ('index.php');";
-					echo "</script>";
-                }
-                else
-                {
-                    echo "<script type='text/javascript'>";
-                    echo "alert('Unable to verify applicant details! Please re-check your details!');";
-                    echo "window.location = ('index.php');";
-                    echo "</script>";
-                }
-            }
-            else
-            {
-                $studno = mysqli_real_escape_string($conn, $_POST['externalno']);
-                $lname = mysqli_real_escape_string($conn, $_POST['lastname']);
-
-                $sql = "SELECT ExternalNo, LName, GName, MName FROM tbl_externalview WHERE ExternalNo = '$studno' AND LName = '$lname' LIMIT 1";
-                $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-                if($result->num_rows > 0)
-                {
-                    $_SESSION["logged_in"] = "YES";
-                    $_SESSION['client'] = $studno;
-                    $_SESSION['client_type'] = 'External';
-
-                    echo "<script type='text/javascript'>";
-					echo "alert('Verification Successful!');";
-					echo "window.location = ('index.php');";
-					echo "</script>";
-                }
-                else
-                {
-                    echo "<script type='text/javascript'>";
-                    echo "alert('Unable to verify applicant details! Please re-check your details!');";
-                    echo "window.location = ('index.php');";
-                    echo "</script>";
-                }
-            }
-        break;
-    }
+	
 ?>

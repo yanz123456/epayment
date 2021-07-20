@@ -167,7 +167,7 @@ CREATE TABLE `vstudinfo` (
 /*Data for the table `vstudinfo` */
 
 insert  into `vstudinfo`(`StudNo`,`LName`,`GName`,`MName`,`Email`) values 
-('A201210549','TAMARES','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
+('1','1','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

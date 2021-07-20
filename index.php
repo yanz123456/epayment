@@ -1,4 +1,5 @@
 <?php
+  include 'admin_module/client/includes/session.php';
   include 'admin_module/admin/includes/conn.php';
 ?>
 <!DOCTYPE html>
@@ -38,6 +39,7 @@
 	        <ul class="navbar-nav nav ml-auto">
 	          <li class="nav-item"><a href="#" class="nav-link" data-nav-section="portal"><span>REQUEST TRANSACTIONS</span></a></li>
 			      <li class="nav-item"><a href="#" id="checkyourtransaction" class="nav-link"><span>CHECK YOUR TRANSACTION</span></a></li>
+            <li class="nav-item"><a href="#" id="checkyourtransaction" class="nav-link"><span>LOGOUT</span></a></li>
 	        </ul>
 	      </div>
 	    </div>
@@ -200,6 +202,7 @@
 
 <script>
   var unit;
+  var map = new Map();
 
   $(function()
   {
@@ -451,10 +454,10 @@
       }, 400);//delay in miliseconds##1000=1second
 
     });
-    
+
     $("#proceedButton").on('click', function(e)
     {
-      var map = new Map();
+      map.clear();
       if($("#client_type")[0].checkValidity())
       {
         if($("#transactionForm")[0].checkValidity())
@@ -465,11 +468,20 @@
             {
               if($("#use_pnu_email").is(':checked'))
               {
-                $("#transactionForm input[type=text], #transactionForm input[type=email], #transactionFrom input[type=number], #transactionForm textarea, #transactionForm select").each(function()
+                $("#transactionForm input[type=text], #transactionForm #transcode, #transactionForm input[type=email], #transactionFrom input[type=number], #transactionForm textarea, #transactionForm select").each(function()
                 {
                   map.set($(this).attr("id"), $(this).val());
                 });
-                console.log(map);
+                //console.log(map);
+                // let keys = Array.from(map.keys());
+                // for(let i = 0; i < keys.length; i++){
+                //   alert(keys[i]);
+                // }
+
+                let values = Array.from(map.values());
+                for(let i = 0; i < values.length; i++){
+                  alert(values[i]);
+                }
               }
             }
           }

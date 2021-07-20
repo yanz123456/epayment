@@ -1,13 +1,12 @@
 <?php
 	session_start();
-	include 'includes/conn.php';
+	//include 'conn.php';
 
-	if(!isset($_SESSION['client']) || trim($_SESSION['client']) == '')
-	{
-		header('location: ../../index.php');
+	if(!isset($_SESSION['login_id']) || trim($_SESSION['login_id']) == ''){
+		header('location: admin_module/client/index.php');
 	}
 
-	$sql = "SELECT * FROM vStudInfo WHERE StudNo = '".$_SESSION['client']."'";
-    $result = mysqli_query($pwebss, $sql) or die(mysqli_error($pwebss));
-	$user = mysqli_fetch_assoc($result);
+	// $sql = "SELECT * FROM tbl_users WHERE id = '".$_SESSION['login_id']."'";
+	// $query = $conn->query($sql);
+	// $user = $query->fetch_assoc();
 ?>

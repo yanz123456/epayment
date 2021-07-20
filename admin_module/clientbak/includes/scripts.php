@@ -116,10 +116,48 @@ $(function(){
 </script>
 <script>
 $(function(){
-  $('#dob').datepicker({
+	//Date picker
+  $('#datepicker_add').datepicker({
     autoclose: true,
     format: 'yyyy-mm-dd'
-  });
+  })
+  $('#datehired').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+  $('#startdate').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+  $('#datepicker_edit').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+
+  //edit
+  $('#edit_datehired').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+  $('#edit_startdate').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+
+  //Payroll Number Regular
+  $('#date_from').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+  $('#date_to').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
+  
+  //Timepicker
+  $('.timepicker').timepicker({
+    showInputs: false
+  })
 
   //Date range picker
   $('#reservation').daterangepicker()
