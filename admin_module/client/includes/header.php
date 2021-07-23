@@ -39,38 +39,6 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.js"></script>
 
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
-
-
-        var calendarEl = document.getElementById('calendar1');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-
-            height: 500,
-
-            initialView: 'dayGridMonth',
-
-            displayEventTime: false, // don't show the time column in list view
-
-            //googleapikey
-            googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
-            //google ph holidays
-            events: 'en.philippines#holiday@group.v.calendar.google.com',
-
-            eventClick: function (event) {
-                // Prevent redirect to Google Calendar
-                event.jsEvent.cancelBubble = true;
-                event.jsEvent.preventDefault();
-            },
-
-            eventColor: 'red'
-        });
-        calendar.render();
-      });
-
-    </script>
-
   	<style type="text/css">
   		.mt20{
   			margin-top:20px;

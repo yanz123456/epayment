@@ -115,14 +115,27 @@ $(function(){
 });
 </script>
 <script>
-$(function(){
-  $('#dob').datepicker({
-    autoclose: true,
-    format: 'yyyy-mm-dd'
-  });
+function setDatepickerPos(input, inst) 
+{
+  var rect = input.getBoundingClientRect();
+  // use 'setTimeout' to prevent effect overridden by other scripts
+  setTimeout(function () {
+      var scrollTop = $("body").scrollTop();
+    inst.dpDiv.css({ top: rect.top + input.offsetHeight + scrollTop });
+  }, 0);
+}
 
-  //Date range picker
-  $('#reservation').daterangepicker()
+$('#dob').datepicker({
+	dateFormat: "yy-mm-dd",
+	changeMonth: true,
+	changeYear: true,
+	defaultDate: +0,
+	inline: true,
+	beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
+});
+
+
+$(function(){
   //Date range picker with time picker
   $('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' })
   //Date range as a button

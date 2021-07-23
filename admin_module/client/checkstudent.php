@@ -5,7 +5,7 @@
 		$studNo = $_POST['studNo'];
         $lastname = $_POST['lastname'];
         $email = $_POST['email'];
-        if($email == "Use PNU Email Instead")
+        if($email == "Use PNU Email instead")
         {
             $sql = "SELECT * FROM vStudInfo WHERE LName = '$lastname' AND StudNo = '$studNo'";
         }

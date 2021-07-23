@@ -39,7 +39,7 @@
 	        <ul class="navbar-nav nav ml-auto">
 	          <li class="nav-item"><a href="#" class="nav-link" data-nav-section="portal"><span>REQUEST TRANSACTIONS</span></a></li>
 			      <li class="nav-item"><a href="#" id="checkyourtransaction" class="nav-link"><span>CHECK YOUR TRANSACTION</span></a></li>
-            <li class="nav-item"><a href="#" id="checkyourtransaction" class="nav-link"><span>LOGOUT</span></a></li>
+            <li class="nav-item"><a href="#" id="logout" class="nav-link"><span>LOGOUT</span></a></li>
 	        </ul>
 	      </div>
 	    </div>
@@ -249,6 +249,11 @@
           }
         }
       });
+    });
+
+    $('#logout').on('click', function (e) 
+    {
+      window.location.replace("admin_module/client/logout.php");
     });
 
     $('#checkyourtransaction').on('click', function (e) 

@@ -41,7 +41,9 @@
       		<div class="row">
       			<div class="col-xs-12">
                 <button type="submit" class="btn btn-primary btn-block btn-flat" name="login"><i class="fa fa-sign-in"></i> Sign In</button>
-				<i> First time requesting? Fill up form <a href="register.php">here</a></i>
+				<i> First time to request? Fill up form <a href="register.php">here</a></i>
+				<br>
+				<i> Forgotten your password? Click <a href="register.php">here</a></i>
         		</div>
       		</div>
     	</form>
@@ -53,7 +55,7 @@
 			  		<p>".$_SESSION['error']."</p> 
 			  	</div>
   			";
-  			unset($_SESSION['error']);
+  			//unset($_SESSION['error']);
   		}
   	?>
 </div>

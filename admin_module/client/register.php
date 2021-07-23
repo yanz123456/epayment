@@ -1,5 +1,10 @@
 <?php include 'includes/header.php'; ?>
 <style>
+
+.datepicker {
+  transform: translate(0, 9em);
+}
+
   body
   {
     background: url(../../images/pnu.png) no-repeat center center fixed !important;
@@ -273,29 +278,104 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-lg-6">
-												<label class="fieldlabels">First Name: *</label> 
-												<input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name" form="personalInfoForm" required/>
-											</div>
-											<div class="col-lg-6">
-												<label class="fieldlabels">Middle Name:</label> 
-												<input type="text" id="middlename" name="middlename" class="form-control" placeholder="Middle Name" form="personalInfoForm"/>
-											</div>
-											<div class="col-lg-6">
-												<label class="fieldlabels">Last Name:</label> 
-												<input type="text" id="lastname" name="lastname" class="form-control" placeholder="Last Name" form="personalInfoForm"/>
-											</div>
-											<div class="form-group">
-												<div class="col-lg-6">
-													<label class="fieldlabels">Date of Birth:</label>
-													<div class='date'>
-														<input type='text' class='form-control' id='dob' name='dob'>
-													</div>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>First Name: *</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='firstname' name='firstname' form='personalInfoForm' autocomplete="off" required/>
 												</div>
 											</div>
-											<div class="col-lg-6">
-												<label class="fieldlabels">For MARRIED WOMEN: Your maiden name when you studied in PNU</label> 
-												<input type="text" id="maiden_name" name="maiden_name" class="form-control" placeholder="Maiden Name" form="personalInfoForm"/>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Middle Name:</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='middlename' name='middlename' form='personalInfoForm' autocomplete="off"/>
+												</div>
+											</div>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Last Name: *</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='reg_lastname' name='lastname' form='personalInfoForm' autocomplete="off" required/>
+												</div>
+											</div>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Date of Birth: *</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='dob' name='dob' form='personalInfoForm' autocomplete="off" required/>
+												</div>
+											</div>
+											<div class='col-lg-12'>
+												<div class='col-3'>
+													<label class='fieldlabels'>For MARRIED WOMEN: Your maiden name when you studied in PNU:</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='maiden_name' name='maiden_name' form='personalInfoForm' autocomplete="off"/>
+												</div>
+											</div>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Sex: *</label>
+												</div>
+												<div class='col-9'>
+													<select class="form-control" id="sex" name="sex" required>
+														<option value="" selected hidden disabled>-- Select --</option>
+														<option value="Male">Male</option>
+														<option value="Female">Female</option>
+													</select>
+												</div>
+											</div>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Civil Status: *</label>
+												</div>
+												<div class='col-9'>
+													<select class="form-control" id="civil_status" name="civil_status" required>
+														<option value="" selected hidden disabled>-- Select --</option>
+														<option value="Single">Single</option>
+														<option value="Married">Married</option>
+														<option value="Divorced">Divorced</option>
+														<option value="Separated">Separated</option>
+														<option value="Widowed">Widowed</option>
+													</select>
+												</div>
+											</div>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Contact Number: *</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='number' id='contact' name='contact' form='personalInfoForm' autocomplete="off" required/>
+												</div>
+											</div>
+											<div class='col-lg-6'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Email Address: *</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='reg_email' name='email' form='personalInfoForm' autocomplete="off" required/>
+												</div>
+											</div>
+											<div class='col-lg-12'>
+												<div class='col-3'>
+													<label class='fieldlabels'>City Address: *</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='city_address' name='city_address' form='personalInfoForm' autocomplete="off" required/>
+												</div>
+											</div>
+											<div class='col-lg-12'>
+												<div class='col-3'>
+													<label class='fieldlabels'>Permanent Address: *</label>
+												</div>
+												<div class='col-9'>
+													<input class='form-control' type='text' id='permanent_address' name='permanent_address' form='personalInfoForm' autocomplete="off" required/>
+												</div>
 											</div>
 										</div>
 									</div> 
@@ -316,6 +396,7 @@
 										<div class="row justify-content-center">
 											<div class="col-7 text-center">
 												<h5 class="purple-text text-center">You Have Successfully Signed Up</h5>
+												<h5 class="text-center"><i style="color:red;">Please wait... This page will redirect you to login page.</i></h5>
 											</div>
 										</div>
 									</div>
@@ -416,7 +497,7 @@ $(document).ready(function(){
 						var getstudNo = $("#studNo").val();
 						var getlastname = $("#lastname").val();
 						var getemail = $("#email").val();
-						
+
 						if(checkstudent(getstudNo, getlastname, getemail) == "successful")
 						{
 							current_fs = $(this).parent();
@@ -461,7 +542,118 @@ $(document).ready(function(){
 				$("#accountInfoForm")[0].reportValidity();
 			}
 		}
+		else if(currentFieldSet == "personalInformation")
+		{
+			if($("#personalInfoForm")[0].checkValidity())
+			{
+				if(client_type == "Student")
+				{
+					var getstudent_number = $("#studNo").val();
+					var getapplicant_number = "";
+				}
+				else if(client_type == "Applicant")
+				{
+					var getstudent_number = "";
+					var getapplicant_number = $("#appNo").val();
+				}
+				
+				var getfirstname = $("#firstname").val();
+				var getmiddlename = $("#middlename").val();
+				var getlastname = $("#reg_lastname").val();
+				var getdob = $("#dob").val();
+				var getmaiden_name = $("#maiden_name").val();
+				var getsex = $("#sex").val();
+				var getcivil_status = $("#civil_status").val();
+				var getcontact = $("#contact").val();
+				var getemail = $("#reg_email").val();
+				var getpassword = $("#password").val();
+				var getcity_address = $("#city_address").val();
+				var getpermanent_address = $("#permanent_address").val();
+
+				if(registerUser(client_type, getstudent_number, getapplicant_number, getfirstname, getmiddlename, getlastname, getdob, getmaiden_name, getsex, getcivil_status, getcontact, getemail, getpassword, getcity_address, getpermanent_address) == "success")
+				{
+					current_fs = $(this).parent();
+					next_fs = $(this).parent().next();
+
+					//Add Class Active
+					$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+					//show the next fieldset
+					next_fs.show();
+					//hide the current fieldset with style
+					current_fs.animate({opacity: 0}, {
+					step: function(now) {
+					// for making fielset appear animation
+					opacity = 1 - now;
+
+					current_fs.css({
+					'display': 'none',
+					'position': 'relative'
+					});
+					next_fs.css({'opacity': opacity});
+					},
+					duration: 500
+					});
+					setProgressBar(++current);
+
+					setTimeout(function() {
+						window.location.replace("index.php");
+					}, 3000);//delay in miliseconds##1000=1second
+				}
+				else
+				{
+					alert(registerUser(client_type, getstudent_number, getapplicant_number, getfirstname, getmiddlename, getlastname, getdob, getmaiden_name, getsex, getcivil_status, getcontact, getemail, getpassword, getcity_address, getpermanent_address));
+				}
+			}
+			else
+			{
+				$("#personalInfoForm")[0].reportValidity();
+			}
+		}
 	});
+
+	function registerUser(client_type, student_number, applicant_number, firstname, middlename, lastname, dob, maiden_name, sex, civil_status, contact, email, password, city_address, permanent_address)
+	{
+		var stat;
+		$.ajax({
+				async: false,
+				url: "registeruser.php",
+				type: "POST",
+				data: {
+					client_type: client_type,
+					student_number: student_number,
+					applicant_number: applicant_number,
+					firstname: firstname,
+					middlename: middlename,
+					lastname: lastname,
+					dob: dob,
+					maiden_name: maiden_name,
+					sex: sex,
+					civil_status: civil_status,
+					contact: contact,
+					email: email,
+					password: password,
+					city_address: city_address,
+					permanent_address: permanent_address
+				},
+				cache: false,
+				success: function(dataResult){
+					var dataResult = JSON.parse(dataResult);
+					if(dataResult.statusCode==200){
+						stat = "success";	
+					}
+					else if(dataResult.statusCode==201){
+						stat = "There is a problem registering this user. Please try again!";
+					}
+					else
+					{
+						stat = dataResult.statusCode;
+					}
+					
+				}
+			});
+			return stat;
+	}
 
 	function checkstudent(studNo, lastname, email)
 	{
@@ -475,6 +667,24 @@ $(document).ready(function(){
 			success: function(data){
 				if(!$.trim(data) == "")
 				{
+					$("#firstname").val(data.GName);
+					$("#firstname").attr("readonly", true);
+					$("#middlename").val(data.MName);
+					$("#middlename").attr("readonly", true);
+					$("#reg_lastname").val(data.LName);
+					$("#reg_lastname").attr("readonly", true);
+
+					if($("#email").val() == "Use PNU Email instead")
+					{
+						$("#reg_email").val(data.Email);
+						$("#reg_email").attr("readonly", true);
+					}
+					else
+					{
+						$("#reg_email").val($("#email").val());
+						$("#reg_email").attr("readonly", true);
+					}
+
 					status = "successful";
 				}
 				else
