@@ -1,4 +1,7 @@
-<?php include 'includes/header.php'; ?>
+<?php 
+session_start();
+include 'includes/header.php'; 
+?>
 <style>
   body
   {
@@ -14,18 +17,6 @@
   	<div class="login-logo">
   		<center><a href="javascript:void(0);"> <img src="../../images/logo_pnu-01.png" style="height: 140px; width: 120px; margin-top: -4px;"></a></center>
   	</div>
-
-	<?php
-  		if(isset($_SESSION['success'])){
-  			echo "
-  				<div class='callout callout-success text-center mt20'>
-			  		<p>".$_SESSION['success']."</p> 
-			  	</div>
-  			";
-  			unset($_SESSION['success']);
-  		}
-	?>
-  
   	<div class="login-box-body">
     	<p class="login-box-msg">E-Services Portal</p>
 
@@ -55,7 +46,7 @@
 			  		<p>".$_SESSION['error']."</p> 
 			  	</div>
   			";
-  			//unset($_SESSION['error']);
+  			unset($_SESSION['error']);
   		}
   	?>
 </div>

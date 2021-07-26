@@ -253,7 +253,7 @@
 										</div>
 										<div class="row">
 											<div class="col-lg-12">
-												<label class="fieldlabels">Client Type: *</label> 
+												<label class="fieldlabels">Client Type: * <i style="color:red;">Old students with no given student number or from SY: 2003 and below. Please choose External.</i></label> 
 												<select id="client_type" class="form-control" form="accountInfoForm" name="client_type" required>
 													<option value="" disabled hidden selected>-- Select Client Type --</option>
 													<option value="Student">Student</option>
@@ -465,7 +465,48 @@ $(document).ready(function(){
 								 "</div>";
 			$("#account_inputs").append(account_inputs);
 		}
-		
+		else if($(this).val() == "Applicant")
+		{
+			$("#account_inputs").empty();
+			var account_inputs = "<div class='col-lg-12'>" +
+								 	"<div class='col-3'><label class='fieldlabels'>Applicant Number: *</label></div>" +
+								 	"<div class='col-9'><input class='form-control' type='text' id='appNo' form='accountInfoForm' name='appNo' placeholder='Applicant Number' autocomplete='off' required/></div>" +
+								 "</div>" +
+								 "<div class='col-lg-12'>" +
+								 	"<div class='col-3'><label class='fieldlabels'>Lastname: *</label></div>" +
+								 	"<div class='col-9'><input class='form-control' type='text' id='lastname' form='accountInfoForm' name='lastname' placeholder='Lastname' autocomplete='off' required/></div>" +
+								 "</div>" +
+								 "<div class='col-lg-12'>" +
+								 	"<label class='fieldlabels'>Email: *</label>" +
+								 	"<input class='form-control' type='email' id='email' form='accountInfoForm' name='email' placeholder='Email' autocomplete='off' required/>" +
+								 "</div>" +
+								 "<div class='col-lg-12'>" +
+								 	"<label class='fieldlabels'>Password: *</label>" +
+								 	"<input class='form-control' type='password' id='password' form='accountInfoForm' name='password' placeholder='Password' autocomplete='off' required/>" +
+								 "</div>" +
+								 "<div class='col-md-12'>" +
+								 	"<label class='fieldlabels'>Confirm Password: *</label>" +
+								 	"<input class='form-control' type='password' id='confirm_password' form='accountInfoForm' name='confirm_password' placeholder='Confirm Password' autocomplete='off' required/>" +
+								 "</div>";
+			$("#account_inputs").append(account_inputs);
+		}
+		else
+		{
+			$("#account_inputs").empty();
+			var account_inputs = "<div class='col-lg-12'>" +
+								 	"<label class='fieldlabels'>Email: *</label>" +
+								 	"<input class='form-control' type='email' id='email' form='accountInfoForm' name='email' placeholder='Email' autocomplete='off' required/>" +
+								 "</div>" +
+								 "<div class='col-lg-12'>" +
+								 	"<label class='fieldlabels'>Password: *</label>" +
+								 	"<input class='form-control' type='password' id='password' form='accountInfoForm' name='password' placeholder='Password' autocomplete='off' required/>" +
+								 "</div>" +
+								 "<div class='col-md-12'>" +
+								 	"<label class='fieldlabels'>Confirm Password: *</label>" +
+								 	"<input class='form-control' type='password' id='confirm_password' form='accountInfoForm' name='confirm_password' placeholder='Confirm Password' autocomplete='off' required/>" +
+								 "</div>";
+			$("#account_inputs").append(account_inputs);
+		}
 	});
 
 	$(document).on('click', '#use_pnu_email', function (e) 
@@ -529,7 +570,70 @@ $(document).ready(function(){
 							alert(checkstudent(getstudNo, getlastname, getemail));
 						}
 					}
-					
+					else if(client_type == "Applicant")
+					{
+						var getAppNo = $("#appNo").val();
+						var getlastname = $("#lastname").val();
+
+						if(checkApplicant(getAppNo, getlastname) == "successful")
+						{
+							current_fs = $(this).parent();
+							next_fs = $(this).parent().next();
+
+							//Add Class Active
+							$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+							//show the next fieldset
+							next_fs.show();
+							//hide the current fieldset with style
+							current_fs.animate({opacity: 0}, {
+							step: function(now) {
+							// for making fielset appear animation
+							opacity = 1 - now;
+
+							current_fs.css({
+							'display': 'none',
+							'position': 'relative'
+							});
+							next_fs.css({'opacity': opacity});
+							},
+							duration: 500
+							});
+							setProgressBar(++current);
+						}
+						else
+						{
+							alert(checkApplicant(getAppNo, getlastname));
+						}
+					}
+					else
+					{
+						$("#reg_email").val($("#email").val());
+						$("#reg_email").attr("readonly", true);
+						current_fs = $(this).parent();
+						next_fs = $(this).parent().next();
+
+						//Add Class Active
+						$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+						//show the next fieldset
+						next_fs.show();
+						//hide the current fieldset with style
+						current_fs.animate({opacity: 0}, {
+						step: function(now) {
+						// for making fielset appear animation
+						opacity = 1 - now;
+
+						current_fs.css({
+						'display': 'none',
+						'position': 'relative'
+						});
+						next_fs.css({'opacity': opacity});
+						},
+						duration: 500
+						});
+						setProgressBar(++current);
+					}
 				}
 				else
 				{
@@ -555,6 +659,11 @@ $(document).ready(function(){
 				{
 					var getstudent_number = "";
 					var getapplicant_number = $("#appNo").val();
+				}
+				else
+				{
+					var getstudent_number = "";
+					var getapplicant_number = "";
 				}
 				
 				var getfirstname = $("#firstname").val();
@@ -598,7 +707,7 @@ $(document).ready(function(){
 
 					setTimeout(function() {
 						window.location.replace("index.php");
-					}, 3000);//delay in miliseconds##1000=1second
+					}, 1500);//delay in miliseconds##1000=1second
 				}
 				else
 				{
@@ -684,6 +793,38 @@ $(document).ready(function(){
 						$("#reg_email").val($("#email").val());
 						$("#reg_email").attr("readonly", true);
 					}
+
+					status = "successful";
+				}
+				else
+				{
+					status = "Your student data cannot be found!";
+				}
+			}
+		});
+		return status;
+	}
+
+	function checkApplicant(appNo, lastname)
+	{
+		var status;
+		$.ajax({
+			type: 'POST',
+			async: false,
+			url: 'checkapplicant.php',
+			data: {appNo: appNo, lastname: lastname},
+			dataType: 'json',
+			success: function(data){
+				if(!$.trim(data) == "")
+				{
+					$("#firstname").val(data.GName);
+					$("#firstname").attr("readonly", true);
+					$("#middlename").val(data.MName);
+					$("#middlename").attr("readonly", true);
+					$("#reg_lastname").val(data.LName);
+					$("#reg_lastname").attr("readonly", true);
+					$("#reg_email").val($("#email").val());
+					$("#reg_email").attr("readonly", true);
 
 					status = "successful";
 				}

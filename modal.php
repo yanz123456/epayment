@@ -6,10 +6,83 @@
 </style>
 
 <div class="modal fade" id="carouselModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Fill-up Form</h5>
+        <h5 class="modal-title">Transaction Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="addrequest.php?action=add" id="transactionForm" method="POST">
+          <!-- <div class="form-group">
+            <div class="row">
+              <label for="title" class="col-sm-3 control-label">Transaction:</label>
+              <div class="col-sm-9">
+                  <input type="hidden" class="form-control" id="year" name="year" readonly>
+                  <input type="hidden" class="form-control" id="month" name="month" readonly>
+                  <input type="hidden" class="form-control" id="transcode" name="transcode" readonly>
+                  <input type="hidden" class="form-control" id="transCategory" name="transCategory" readonly>
+                  <input type="hidden" class="form-control" id="transUnitInputtedBy" name="transUnitInputtedBy" readonly>
+                  <input type="hidden" class="form-control" id="transNoOfCopy" name="transNoOfCopy" readonly>
+                  <input type="text" class="form-control" id="transtype" name="transtype" readonly>
+              </div>
+            </div>
+          </div> -->
+          <div class="form-group">
+            <div class="box-body">
+                  <div id="listofemployees">
+                    <div class="row">
+                      <div class="col-xl-12">
+                        <div class="">
+                          <div class="box-body">
+                            <table id="example1" class="table table-bordered">
+                              <thead>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Department</th>
+                                <th>Tools</th>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-xl-12">
+                        <div class="">
+                          <div class="box-header with-border">
+                            <h5>Additional Transactions Offered by this Office (Optional)</h5>
+                          </div>
+                          <div class="box-body">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+      </div>
+      <div class="modal-footer">
+        <button id="showConfirmation" type="button" class="btn btn-danger">Show Temporary Confirmation</button>
+        <button id="proceedButton" type="button" class="btn btn-primary">Proceed</button>
+        <!-- <button type="submit" class="btn btn-primary">Proceed</button> -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="carouselModalbak" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Transaction Details</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

@@ -16,6 +16,38 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_transactionportal` /*!40100 DEFAULT 
 
 USE `db_transactionportal`;
 
+/*Table structure for table `tbl_clients` */
+
+DROP TABLE IF EXISTS `tbl_clients`;
+
+CREATE TABLE `tbl_clients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` text,
+  `password` text,
+  `client_type` text,
+  `student_number` text,
+  `applicant_number` text,
+  `lastname` text,
+  `firstname` text,
+  `middlename` text,
+  `dob` text,
+  `maiden_name` text,
+  `sex` text,
+  `civil_status` text,
+  `contact_number` text,
+  `city_address` text,
+  `permanent_address` text,
+  `date_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tbl_clients` */
+
+insert  into `tbl_clients`(`id`,`email`,`password`,`client_type`,`student_number`,`applicant_number`,`lastname`,`firstname`,`middlename`,`dob`,`maiden_name`,`sex`,`civil_status`,`contact_number`,`city_address`,`permanent_address`,`date_registered`) values 
+(1,'tamares.bld@pnu.edu.ph','c4ca4238a0b923820dcc509a6f75849b','Student','1','','1','BRYAN LESTER','DE JULIAN','07/31/2021','','Male','Single','1','1','1','2021-07-22 23:00:30'),
+(2,'asd@gc','202cb962ac59075b964b07152d234b70','Applicant','','1','1','BRYAN LESTER','DE JULIAN','07/31/2021','','Male','Single','1','1','1','2021-07-23 18:47:53'),
+(3,'external@gmail.com','202cb962ac59075b964b07152d234b70','External','','','ex','ex','ex','07/31/2021','','Male','Single','1','1','1','2021-07-23 18:50:55');
+
 /*Table structure for table `tbl_externalview` */
 
 DROP TABLE IF EXISTS `tbl_externalview`;
@@ -149,7 +181,7 @@ CREATE TABLE `vappinfo` (
 /*Data for the table `vappinfo` */
 
 insert  into `vappinfo`(`StudNo`,`LName`,`GName`,`MName`,`Email`) values 
-('G201210549','TAMARES','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
+('1','1','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
 
 /*Table structure for table `vstudinfo` */
 
