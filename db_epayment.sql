@@ -1,8 +1,8 @@
 /*
-SQLyog Ultimate v12.5.1 (64 bit)
+SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.1.41 : Database - db_transactionportal
 *********************************************************************
-*/
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -43,10 +43,7 @@ CREATE TABLE `tbl_clients` (
 
 /*Data for the table `tbl_clients` */
 
-insert  into `tbl_clients`(`id`,`email`,`password`,`client_type`,`student_number`,`applicant_number`,`lastname`,`firstname`,`middlename`,`dob`,`maiden_name`,`sex`,`civil_status`,`contact_number`,`city_address`,`permanent_address`,`date_registered`) values 
-(1,'tamares.bld@pnu.edu.ph','c4ca4238a0b923820dcc509a6f75849b','Student','1','','1','BRYAN LESTER','DE JULIAN','07/31/2021','','Male','Single','1','1','1','2021-07-22 23:00:30'),
-(2,'asd@gc','202cb962ac59075b964b07152d234b70','Applicant','','1','1','BRYAN LESTER','DE JULIAN','07/31/2021','','Male','Single','1','1','1','2021-07-23 18:47:53'),
-(3,'external@gmail.com','202cb962ac59075b964b07152d234b70','External','','','ex','ex','ex','07/31/2021','','Male','Single','1','1','1','2021-07-23 18:50:55');
+insert  into `tbl_clients`(`id`,`email`,`password`,`client_type`,`student_number`,`applicant_number`,`lastname`,`firstname`,`middlename`,`dob`,`maiden_name`,`sex`,`civil_status`,`contact_number`,`city_address`,`permanent_address`,`date_registered`) values (1,'tamares.bld@pnu.edu.ph','c4ca4238a0b923820dcc509a6f75849b','Student','1','','1','BRYAN LESTER','DE JULIAN','07/31/2021','','Male','Single','1','1','1','2021-07-22 23:00:30'),(2,'asd@gc','202cb962ac59075b964b07152d234b70','Applicant','','1','1','BRYAN LESTER','DE JULIAN','07/31/2021','','Male','Single','1','1','1','2021-07-23 18:47:53'),(3,'external@gmail.com','202cb962ac59075b964b07152d234b70','External','','','ex','ex','ex','07/31/2021','','Male','Single','1','1','1','2021-07-23 18:50:55');
 
 /*Table structure for table `tbl_externalview` */
 
@@ -63,9 +60,7 @@ CREATE TABLE `tbl_externalview` (
 
 /*Data for the table `tbl_externalview` */
 
-insert  into `tbl_externalview`(`ExternalNo`,`LName`,`GName`,`MName`,`Email`) values 
-('201210549','Tamares','Bryan Lester','De Julian','tamares.bld@pnu.edu.ph'),
-('1622878235','Dela Cruz','Juan','','delacruzjuan@gmail.com');
+insert  into `tbl_externalview`(`ExternalNo`,`LName`,`GName`,`MName`,`Email`) values ('201210549','Tamares','Bryan Lester','De Julian','tamares.bld@pnu.edu.ph'),('1622878235','Dela Cruz','Juan','','delacruzjuan@gmail.com');
 
 /*Table structure for table `tbl_offices` */
 
@@ -80,11 +75,7 @@ CREATE TABLE `tbl_offices` (
 
 /*Data for the table `tbl_offices` */
 
-insert  into `tbl_offices`(`id`,`description`,`remarks`) values 
-(1,'OUR','active'),
-(2,'CGSTER','active'),
-(3,'AUXILLARY','active'),
-(4,'PBDO','active');
+insert  into `tbl_offices`(`id`,`description`,`remarks`) values (1,'OUR','active'),(2,'CGSTER','active'),(3,'AUXILLARY','active'),(4,'PBDO','active');
 
 /*Table structure for table `tbl_requests` */
 
@@ -128,17 +119,14 @@ CREATE TABLE `tbl_transactions` (
   `unit_inputted_by` text,
   `no_of_copy` text,
   `office_id` int(11) DEFAULT NULL,
+  `note` text,
   `remarks` text,
   `date_added` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `tbl_transactions` */
 
-insert  into `tbl_transactions`(`account_code`,`description`,`amount`,`unit`,`transaction_type`,`category`,`unit_inputted_by`,`no_of_copy`,`office_id`,`remarks`,`date_added`) values 
-('613CLST','Checklist',50.00,NULL,'Fixed','Document','Office','NO',1,'active','2021-07-05 19:20:19'),
-('648LDRY','Laundry',25.00,'per kilo','Fixed With Unit','Service','Office','NO',3,'active','2021-07-05 19:45:35'),
-('628ENTD','Entrance Data',50.00,'per page','Fixed With Unit','Document','Office','YES',1,'active','2021-07-05 19:46:36'),
-('TPNUHSTELWA','PNU Hostel( With Aircon)',600.00,'per head','Fixed With Unit','Service','Client','NO',3,'active','2021-07-05 19:51:49');
+insert  into `tbl_transactions`(`account_code`,`description`,`amount`,`unit`,`transaction_type`,`category`,`unit_inputted_by`,`no_of_copy`,`office_id`,`note`,`remarks`,`date_added`) values ('613CLST','Checklist','50.00',NULL,'Fixed','Document','Office','YES',1,'This is checklist.','active','2021-07-27 03:16:16'),('628ENTD','Entrance Data','50.00','per page','Fixed With Unit','Document','Client','NO',1,'This is Entrance Data','active','2021-07-27 03:17:15'),('648LDRY','Laundry','25.00','per kilo','Fixed With Unit','Service','Office','NO',3,'This is Laundry','active','2021-07-27 03:17:42');
 
 /*Table structure for table `tbl_users` */
 
@@ -159,12 +147,7 @@ CREATE TABLE `tbl_users` (
 
 /*Data for the table `tbl_users` */
 
-insert  into `tbl_users`(`id`,`username`,`password`,`firstname`,`lastname`,`photo`,`type`,`office_id`,`created_on`) values 
-(1,'admin','21232f297a57a5a743894a0e4a801fc3','admin','admin',NULL,'admin',NULL,'2021-06-04 01:06:44'),
-(2,'OUR','1f14b053155ac1b5cb189101ddffe3f9','OUR','OUR',NULL,'office',1,'2021-06-04 01:28:57'),
-(3,'CGSTER','b78addcd10fd5aff74b9b7053962b774','CGSTER','CGSTER',NULL,'office',2,'2021-07-05 19:20:37'),
-(4,'AUXILLARY','2f34d282e9d924a737c27dba29bc10ec','AUXILLARY','AUXILLARY',NULL,'office',3,'2021-07-05 19:20:42'),
-(5,'PBDO','5ff74212f1f6e66597133d7d271c7a91','PBDO','PBDO',NULL,'office',4,'2021-07-05 19:20:47');
+insert  into `tbl_users`(`id`,`username`,`password`,`firstname`,`lastname`,`photo`,`type`,`office_id`,`created_on`) values (1,'admin','21232f297a57a5a743894a0e4a801fc3','admin','admin',NULL,'admin',NULL,'2021-06-04 01:06:44'),(2,'OUR','1f14b053155ac1b5cb189101ddffe3f9','OUR','OUR',NULL,'office',1,'2021-06-04 01:28:57'),(3,'CGSTER','b78addcd10fd5aff74b9b7053962b774','CGSTER','CGSTER',NULL,'office',2,'2021-07-05 19:20:37'),(4,'AUXILLARY','2f34d282e9d924a737c27dba29bc10ec','AUXILLARY','AUXILLARY',NULL,'office',3,'2021-07-05 19:20:42'),(5,'PBDO','5ff74212f1f6e66597133d7d271c7a91','PBDO','PBDO',NULL,'office',4,'2021-07-05 19:20:47');
 
 /*Table structure for table `vappinfo` */
 
@@ -180,8 +163,7 @@ CREATE TABLE `vappinfo` (
 
 /*Data for the table `vappinfo` */
 
-insert  into `vappinfo`(`StudNo`,`LName`,`GName`,`MName`,`Email`) values 
-('1','1','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
+insert  into `vappinfo`(`StudNo`,`LName`,`GName`,`MName`,`Email`) values ('1','1','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
 
 /*Table structure for table `vstudinfo` */
 
@@ -198,8 +180,7 @@ CREATE TABLE `vstudinfo` (
 
 /*Data for the table `vstudinfo` */
 
-insert  into `vstudinfo`(`StudNo`,`LName`,`GName`,`MName`,`Email`) values 
-('1','1','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
+insert  into `vstudinfo`(`StudNo`,`LName`,`GName`,`MName`,`Email`) values ('1','1','BRYAN LESTER','DE JULIAN','tamares.bld@pnu.edu.ph');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
