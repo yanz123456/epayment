@@ -20,8 +20,6 @@
             <div class="row">
               <label for="title" class="col-sm-3 control-label">Transaction:</label>
               <div class="col-sm-9">
-                  <input type="hidden" class="form-control" id="year" name="year" readonly>
-                  <input type="hidden" class="form-control" id="month" name="month" readonly>
                   <input type="hidden" class="form-control" id="transcode" name="transcode" readonly>
                   <input type="hidden" class="form-control" id="transCategory" name="transCategory" readonly>
                   <input type="hidden" class="form-control" id="transUnitInputtedBy" name="transUnitInputtedBy" readonly>
@@ -39,13 +37,17 @@
                           <div class="box-body">
                             <table id="example1" class="table table-bordered">
                               <thead>
-                                <th>Employee ID</th>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Department</th>
-                                <th>Tools</th>
+                                <input type="hidden" class="form-control" id="year" name="year" readonly>
+                                <input type="hidden" class="form-control" id="month" name="month" readonly>
+                                <th>Transaction Name</th>
+                                <th>Office</th>
+                                <th>Note</th>
+                                <th>Price & Unit</th>
+                                <th>Qty</th>
+                                <th>Total Price</th>
+                                <th></th>
                               </thead>
-                              <tbody>
+                              <tbody id="transactionList">
                               </tbody>
                             </table>
                           </div>
@@ -58,6 +60,19 @@
                             <h5>Additional Transactions Offered by this Office (Optional)</h5>
                           </div>
                           <div class="box-body">
+                            <table id="example1" class="table table-bordered">
+                              <thead>
+                                <input type="hidden" class="form-control" id="year" name="year" readonly>
+                                <input type="hidden" class="form-control" id="month" name="month" readonly>
+                                <th>Transaction Name</th>
+                                <th>Office</th>
+                                <th>Note</th>
+                                <th>Price & Unit</th>
+                                <th>Qty</th>
+                                <th>Total Price</th>
+                                <th></th>
+                              </thead>
+                            </table>
                           </div>
                         </div>
                       </div>
@@ -65,7 +80,6 @@
                   </div>
               </div>
           </div>
-          <hr>
       </div>
       <div class="modal-footer">
         <button id="showConfirmation" type="button" class="btn btn-danger">Show Temporary Confirmation</button>

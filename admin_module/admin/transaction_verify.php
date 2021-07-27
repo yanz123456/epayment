@@ -14,6 +14,7 @@
                     $description = mysqli_real_escape_string($conn, $_POST['description']);
                     $amount = mysqli_real_escape_string($conn, $_POST['amount']);
                     $office = mysqli_real_escape_string($conn, $_POST['office']);
+                    $trans_desc = mysqli_real_escape_string($conn, $_POST['trans_desc']);
         
                     $sql ="SELECT account_code FROM tbl_transactions WHERE account_code = '$account_code' and remarks = 'active'";
                     $result = $conn->query($sql);
@@ -26,11 +27,11 @@
                         if($trans_category == "Document")
                         {
                             $trans_no_of_copy = mysqli_real_escape_string($conn, $_POST['trans_no_of_copy']);
-                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, transaction_type, category, unit_inputted_by, no_of_copy, office_id, remarks) VALUES ('$account_code', '$description', '$amount', 'Fixed', '$trans_category', 'Office', '$trans_no_of_copy', '$office', 'active')";
+                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, transaction_type, category, unit_inputted_by, no_of_copy, office_id, note, remarks) VALUES ('$account_code', '$description', '$amount', 'Fixed', '$trans_category', 'Office', '$trans_no_of_copy', '$office', '$trans_desc', 'active')";
                         }
                         else
                         {
-                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, transaction_type, category, unit_inputted_by, no_of_copy, office_id, remarks) VALUES ('$account_code', '$description', '$amount', 'Fixed', '$trans_category', 'Office', 'NO', '$office', 'active')";
+                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, transaction_type, category, unit_inputted_by, no_of_copy, office_id, note, remarks) VALUES ('$account_code', '$description', '$amount', 'Fixed', '$trans_category', 'Office', 'NO', '$office', '$trans_desc', 'active')";
                         }
                         
                         if($conn->query($sql)){
@@ -49,6 +50,7 @@
                     $unit = mysqli_real_escape_string($conn, $_POST['unit']);
                     $office = mysqli_real_escape_string($conn, $_POST['office']);
                     $trans_unit_inputtedby = mysqli_real_escape_string($conn, $_POST['trans_unit_inputtedby']);
+                    $trans_desc = mysqli_real_escape_string($conn, $_POST['trans_desc']);
         
                     $sql ="SELECT account_code FROM tbl_transactions WHERE account_code = '$account_code' and remarks = 'active'";
                     $result = $conn->query($sql);
@@ -61,11 +63,11 @@
                         if($trans_category == "Document")
                         {
                             $trans_no_of_copy = mysqli_real_escape_string($conn, $_POST['trans_no_of_copy']);
-                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, unit, transaction_type, category, unit_inputted_by, no_of_copy, office_id, remarks) VALUES ('$account_code', '$description', '$amount', '$unit', 'Fixed With Unit', '$trans_category', '$trans_unit_inputtedby', '$trans_no_of_copy', '$office', 'active')";
+                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, unit, transaction_type, category, unit_inputted_by, no_of_copy, office_id, note, remarks) VALUES ('$account_code', '$description', '$amount', '$unit', 'Fixed With Unit', '$trans_category', '$trans_unit_inputtedby', '$trans_no_of_copy', '$office', '$trans_desc', 'active')";
                         }
                         else
                         {
-                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, unit, transaction_type, category, unit_inputted_by, no_of_copy, office_id, remarks) VALUES ('$account_code', '$description', '$amount', '$unit', 'Fixed With Unit', '$trans_category', '$trans_unit_inputtedby', 'NO', '$office', 'active')";
+                            $sql = "INSERT INTO tbl_transactions (account_code, description, amount, unit, transaction_type, category, unit_inputted_by, no_of_copy, office_id, note, remarks) VALUES ('$account_code', '$description', '$amount', '$unit', 'Fixed With Unit', '$trans_category', '$trans_unit_inputtedby', 'NO', '$office', '$trans_desc', 'active')";
                         }
 
                         if($conn->query($sql)){
@@ -81,6 +83,7 @@
                     $description = mysqli_real_escape_string($conn, $_POST['description']);
                     $trans_category = mysqli_real_escape_string($conn, $_POST['trans_category']);
                     $office = mysqli_real_escape_string($conn, $_POST['office']);
+                    $trans_desc = mysqli_real_escape_string($conn, $_POST['trans_desc']);
         
                     $sql ="SELECT account_code FROM tbl_transactions WHERE account_code = '$account_code' and remarks = 'active'";
                     $result = $conn->query($sql);
@@ -93,11 +96,11 @@
                         if($trans_category == "Document")
                         {
                             $trans_no_of_copy = mysqli_real_escape_string($conn, $_POST['trans_no_of_copy']);
-                            $sql = "INSERT INTO tbl_transactions (account_code, description, transaction_type, category, unit_inputted_by, no_of_copy, office_id, remarks) VALUES ('$account_code', '$description', 'Variable', '$trans_category', 'Office', '$trans_no_of_copy', '$office', 'active')";
+                            $sql = "INSERT INTO tbl_transactions (account_code, description, transaction_type, category, unit_inputted_by, no_of_copy, office_id, note, remarks) VALUES ('$account_code', '$description', 'Variable', '$trans_category', 'Office', '$trans_no_of_copy', '$office', '$trans_desc', 'active')";
                         }
                         else
                         {
-                            $sql = "INSERT INTO tbl_transactions (account_code, description, transaction_type, category, unit_inputted_by, no_of_copy, office_id, remarks) VALUES ('$account_code', '$description', 'Variable', '$trans_category', 'Office', 'NO', '$office', 'active')";
+                            $sql = "INSERT INTO tbl_transactions (account_code, description, transaction_type, category, unit_inputted_by, no_of_copy, office_id, note, remarks) VALUES ('$account_code', '$description', 'Variable', '$trans_category', 'Office', 'NO', '$office', '$trans_desc', 'active')";
                         }
                         
                         if($conn->query($sql)){

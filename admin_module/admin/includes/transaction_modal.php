@@ -29,12 +29,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="title" class="col-sm-3 control-label">Description:</label>
+                        <label for="title" class="col-sm-3 control-label">Name:</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="description" name="description" required autocomplete="off">
                         </div>
                     </div>
                     <div id="dynamicinputs2">
+                    </div>
+                    <div class="form-group">
+                        <label for="title" class="col-sm-3 control-label">Description/Note to Client:</label>
+                        <div class="col-sm-9">
+                            <textarea style="resize:none;" row="5" type="text" class="form-control" id="trans_desc" name="trans_desc" required autocomplete="off"></textarea>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="title" class="col-sm-3 control-label">Office:</label>

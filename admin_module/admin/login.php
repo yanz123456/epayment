@@ -17,7 +17,7 @@
 		else
 		{
 			$row = $query->fetch_assoc();
-			$_SESSION['login_id'] = $row['id'];
+			$_SESSION['admin_login_id'] = $row['id'];
 			$_SESSION['username'] = $row['username'];
 			$_SESSION["admintype"] = $row["type"];
 

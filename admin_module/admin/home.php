@@ -64,10 +64,11 @@
                 <thead>
                   <th>Account Code</th>
                   <th>Amount Type</th>
-                  <th>Description</th>
+                  <th>Name</th>
                   <th>Office</th>
                   <th>Amount</th>
                   <th>Unit</th>
+                  <th>Description</th>
                   <th></th>
                 </thead>
                 <tbody>
@@ -83,6 +84,7 @@
                           <td>".$row['office_name']."</td>
                           <td align='right'>P ".number_format($row['amount'], 2)."</td>
                           <td>".$row['unitadded']."</td>
+                          <td>".$row['note']."</td>
                           <td>
                             <button class='col-xs-12 btn btn-success btn-sm edit btn-flat' data-id='".$row['account_code']."'><i class='fa fa-edit'></i> Edit</button>
                             <button class='col-xs-12 btn btn-danger btn-sm delete btn-flat' data-id='".$row['account_code']."'><i class='fa fa-trash'></i> Delete</button>

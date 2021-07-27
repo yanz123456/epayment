@@ -38,7 +38,7 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav nav ml-auto">
 	          <li class="nav-item"><a href="#" class="nav-link" data-nav-section="portal"><span>REQUEST TRANSACTIONS</span></a></li>
-			      <li class="nav-item"><a href="#" id="checkyourtransaction" class="nav-link"><span>CHECK YOUR TRANSACTION</span></a></li>
+			      <li class="nav-item"><a href="#" id="checkyourtransaction" class="nav-link"><span>TRANSACTION HISTORY</span></a></li>
             <li class="nav-item"><a href="#" id="logout" class="nav-link"><span>LOGOUT</span></a></li>
 	        </ul>
 	      </div>
@@ -218,6 +218,7 @@
         type: 'POST',
         url: 'transaction_details.php',
         data: {id:id},
+        async: false,
         dataType: 'json',
         success: function(response){
           if(response.error)
@@ -231,7 +232,30 @@
             var cur_month = cur_date.getMonth() + 1;
             $("#year").val(cur_year);
             $("#month").val(cur_month);
-            $("#transcode").val(response.account_code);
+            $("#transactionList").empty();
+            if(response.transaction_type == "Fixed With Unit")
+            {
+              var appendrow = "<tr id='" + response.account_code + "'>" +
+                                "<td>" + response.description + "</td>" +
+                                "<td>" + response.office_name + "</td>" +
+                                "<td>" + response.note + "</td>" +
+                                "<td>" + response.amount + " " +  response.unit + "</td>" +
+                                "<td>" + response.note + "</td>" +
+                              "</tr>";
+            }
+            else
+            {
+              var appendrow = "<tr id='" + response.account_code + "'>" +
+                                "<td>" + response.description + "</td>" +
+                                "<td>" + response.office_name + "</td>" +
+                                "<td>" + response.note + "</td>" +
+                                "<td>" + response.amount + "</td>" +
+                                "<td>" + response.note + "</td>" +
+                              "</tr>";
+            }
+            
+            $("#transactionList").append(appendrow);
+            /* $("#transcode").val(response.account_code);
             $("#transtype").val(response.description);
             if(response.transaction_type == "Fixed With Unit")
             {
@@ -245,7 +269,7 @@
             $("#transoffice").val(response.office_name);
             $("#transCategory").val(response.category);
             $("#transUnitInputtedBy").val(response.unit_inputted_by);
-            $("#transNoOfCopy").val(response.no_of_copy);
+            $("#transNoOfCopy").val(response.no_of_copy); */
           }
         }
       });
@@ -316,7 +340,7 @@
       }
     });
 
-    $('#client_type').on('change', function (e) 
+   /*  $('#client_type').on('change', function (e) 
     {
       $("#secondform").empty();
       $("#additionalTr").empty();
@@ -423,7 +447,7 @@
           }
         }
       }
-    });
+    }); */
 
     $("#showConfirmation").on('click', function(e){
 
