@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    
   </head>
   <body>
 	  
@@ -123,7 +126,7 @@
             $amount = number_format($row["amount"], 2);
             $unit = $row["unit"];
             echo "
-              <div class='col-md-4 d-flex ftco-animate' id='transactions' style='border: 0px solid black;'>
+              <div class='col-md-6 d-flex ftco-animate' id='transactions' style='border: 0px solid black;'>
                 <div class='blog-entry justify-content-end'>
                 <div class='text mt-3 float-right'>
                   <input type='hidden' id='account_code' value='$account_code'>
@@ -174,14 +177,9 @@
 			</div>
 		  </div>
       </div>
-    </footer>
-<?php 
-  include 'modal.php';
-?>
-
+      </footer>
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
 
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
@@ -199,6 +197,12 @@
 
   </body>
 </html>
+<!-- Datatables -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+<?php 
+  include 'modal.php';
+?>
 
 <script>
   var unit;
@@ -227,34 +231,197 @@
           }
           else
           {
+            // If table is initialized
+            if ($.fn.DataTable.isDataTable('#example2')){
+              // Destroy existing table
+              $('#example2').DataTable().destroy();
+            };
+
             var cur_date = new Date();
             var cur_year = cur_date.getFullYear();
             var cur_month = cur_date.getMonth() + 1;
             $("#year").val(cur_year);
             $("#month").val(cur_month);
             $("#transactionList").empty();
-            if(response.transaction_type == "Fixed With Unit")
+            $("#unitPrice").empty();
+            if(response.transaction.transaction_type == "Fixed With Unit")
             {
-              var appendrow = "<tr id='" + response.account_code + "'>" +
-                                "<td>" + response.description + "</td>" +
-                                "<td>" + response.office_name + "</td>" +
-                                "<td>" + response.note + "</td>" +
-                                "<td>" + response.amount + " " +  response.unit + "</td>" +
-                                "<td>" + response.note + "</td>" +
-                              "</tr>";
+              $("#unitPrice").html("("+response.transaction.unit+")");
+              if (response.transaction.category == "Document")
+              {
+                if(response.transaction.no_of_copy == "YES")
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                    "<td>To be decided by Office</td>" +
+                                    "<td><input type='number' class='form-control' name='no_copies' min='1' required></td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+                else
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                    "<td>To be decided by Office</td>" +
+                                    "<td>1</td>" +
+                                    "<td></td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+              }
+              else
+              {
+                if(response.transaction.unit_inputted_by == "Client")
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                    "<td><input type='number' class='form-control' name='qty_of_unit' min='1' required></td>" +
+                                    "<td>-</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+                else
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                    "<td>To be decided by Office</td>" +
+                                    "<td>-</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+              }
+            }
+            else if(response.transaction.transaction_type == "Fixed")
+            {
+              if (response.transaction.category == "Document")
+              {
+                if(response.transaction.no_of_copy == "YES")
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + "</td>" +
+                                    "<td>-</td>" +
+                                    "<td><input type='number' class='form-control' name='no_copies' min='1' required></td>" +
+                                    "<td><span id='totalPrice'></span></td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+                else
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + "</td>" +
+                                    "<td>-</td>" +
+                                    "<td>1</td>" +
+                                    "<td>Php " + response.transaction.amount + "</td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+              }
+              else
+              {
+                var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                  "<td>" + response.transaction.description + "</td>" +
+                                  "<td>" + response.transaction.office_name + "</td>" +
+                                  "<td>" + response.transaction.note + "</td>" +
+                                  "<td>Php " + response.transaction.amount + "</td>" +
+                                  "<td>-</td>" +
+                                  "<td>-</td>" +
+                                  "<td>Php " + response.transaction.amount + "</td>" +
+                                  "<td></td>" +
+                                "</tr>";
+              }
             }
             else
             {
-              var appendrow = "<tr id='" + response.account_code + "'>" +
-                                "<td>" + response.description + "</td>" +
-                                "<td>" + response.office_name + "</td>" +
-                                "<td>" + response.note + "</td>" +
-                                "<td>" + response.amount + "</td>" +
-                                "<td>" + response.note + "</td>" +
-                              "</tr>";
+              if (response.transaction.category == "Document")
+              {
+                if(response.transaction.no_of_copy == "YES")
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td>-</td>" +
+                                    "<td><input type='number' class='form-control' name='no_copies' min='1' required></td>" +
+                                    "<td>Will be indicated in Order of Payment</span></td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+                else
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td>-</td>" +
+                                    "<td>-</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+                }
+              }
+              else
+              {
+                var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td>-</td>" +
+                                    "<td>-</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td></td>" +
+                                  "</tr>";
+              }
             }
-            
             $("#transactionList").append(appendrow);
+
+            $("#loadedTransactions").empty();
+            
+            var appendrow2 = "";
+            if($.trim(response.loadedTransaction))
+            {
+              $.each(response.loadedTransaction, function(i, item)
+              {
+                appendrow2 = "<tr id='" + response.loadedTransaction[i].account_code + "'>" +
+                                  "<td>" + response.loadedTransaction[i].description + "</td>" +
+                                  "<td>" + response.loadedTransaction[i].office_name + "</td>" +
+                                  "<td>" + response.loadedTransaction[i].note + "</td>" +
+                                  "<td>Will be indicated in Order of Payment</td>" +
+                                  "<td><button type='button' class='btn btn-primary add' name='add'>ADD</button></td>" +
+                                "</tr>";
+                $("#loadedTransactions").append(appendrow2);
+              });
+
+              $('#example2').DataTable();
+            }
+            else
+            {
+              $('#example2').DataTable().draw();
+            }
+
             /* $("#transcode").val(response.account_code);
             $("#transtype").val(response.description);
             if(response.transaction_type == "Fixed With Unit")
@@ -339,115 +506,6 @@
         $("#cyt_secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div>")
       }
     });
-
-   /*  $('#client_type').on('change', function (e) 
-    {
-      $("#secondform").empty();
-      $("#additionalTr").empty();
-      e.preventDefault();
-      var type = $('option:selected',this).val();
-      var transCategory = $("#transCategory").val();
-      var transUnitInputtedBy = $("#transUnitInputtedBy").val();
-      var transNoOfCopy = $("#transNoOfCopy").val();
-
-      if(transCategory == "Document")
-      {
-        if(type == "External2")
-        {
-          if(transNoOfCopy == "YES")
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='firstname' class='col-sm-3 control-label'>Firstname:</label><div class='col-sm-9'><input class='form-control' type='text' id='firstname' name='firstname' placeholder='Enter your firstname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='middlename' class='col-sm-3 control-label'>Middlename:</label><div class='col-sm-9'><input class='form-control' type='text' id='middlename' name='middlename' placeholder='Enter your middlename here' autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='no_of_copies' class='col-sm-3 control-label'>No. Of Copy(ies):</label><div class='col-sm-9'><input class='form-control' type='number' min='1' id='no_of_copies' name='no_of_copies' placeholder='Enter number of copy(ies) here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='firstname' class='col-sm-3 control-label'>Firstname:</label><div class='col-sm-9'><input class='form-control' type='text' id='firstname' name='firstname' placeholder='Enter your firstname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='middlename' class='col-sm-3 control-label'>Middlename:</label><div class='col-sm-9'><input class='form-control' type='text' id='middlename' name='middlename' placeholder='Enter your middlename here' autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required autocomplete='off'></div></div></div><div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-        else if(type == "External1")
-        {
-          if(transNoOfCopy == "YES")
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='externalno' class='col-sm-3 control-label'>Requestor #:</label><div class='col-sm-9'><input class='form-control' type='text' id='externalno' name='externalno' placeholder='Enter your requestor number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='no_of_copies' class='col-sm-3 control-label'>No. Of Copy(ies):</label><div class='col-sm-9'><input class='form-control' type='number' min='1' id='no_of_copies' name='no_of_copies' placeholder='Enter number of copy(ies) here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='externalno' class='col-sm-3 control-label'>Requestor #:</label><div class='col-sm-9'><input class='form-control' type='text' id='externalno' name='externalno' placeholder='Enter your requestor number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-        else if(type == "Student")
-        {
-          if(transNoOfCopy == "YES")
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='studno' class='col-sm-3 control-label'>Student #:</label><div class='col-sm-9'><input class='form-control' type='text' id='studno' name='studno' placeholder='Enter your student number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><div class='col-sm-3'></div><div class='col-sm-9'><div class='form-check'><input class='form-check-input' type='checkbox' value='' id='use_pnu_email'><label class='form-check-label' for='use_pnu_email'>Use PNU Email Instead</label></div></div></div></div> <div class='form-group'><div class='row'><label for='no_of_copies' class='col-sm-3 control-label'>No. Of Copy(ies):</label><div class='col-sm-9'><input class='form-control' type='number' min='1' id='no_of_copies' name='no_of_copies' placeholder='Enter number of copy(ies) here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-
-            $("#confirmationTable").find('tbody').append("<tr><td>No. Of Copies</td><td><span id='confModal_noOfCopies'></span></td></tr>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='studno' class='col-sm-3 control-label'>Student #:</label><div class='col-sm-9'><input class='form-control' type='text' id='studno' name='studno' placeholder='Enter your student number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><div class='col-sm-3'></div><div class='col-sm-9'><div class='form-check'><input class='form-check-input' type='checkbox' value='' id='use_pnu_email'><label class='form-check-label' for='use_pnu_email'>Use PNU Email Instead</label></div></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-        else
-        {
-          if(transNoOfCopy == "YES")
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><label for='no_of_copies' class='col-sm-3 control-label'>No. Of Copy(ies):</label><div class='col-sm-9'><input class='form-control' type='number' min='1' id='no_of_copies' name='no_of_copies' placeholder='Enter number of copy(ies) here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-      }
-      else
-      {
-        if(type == "External2")
-        {
-          if(transUnitInputtedBy == "Client")
-          {
-
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='firstname' class='col-sm-3 control-label'>Firstname:</label><div class='col-sm-9'><input class='form-control' type='text' id='firstname' name='firstname' placeholder='Enter your firstname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='middlename' class='col-sm-3 control-label'>Middlename:</label><div class='col-sm-9'><input class='form-control' type='text' id='middlename' name='middlename' placeholder='Enter your middlename here' autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='qty_of_unit' class='col-sm-3 control-label'>Quantity ( " + unit + " ):</label><div class='col-sm-9'><input class='form-control' type='number' id='qty_of_unit' name='qty_of_unit' placeholder='Enter quantity here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='firstname' class='col-sm-3 control-label'>Firstname:</label><div class='col-sm-9'><input class='form-control' type='text' id='firstname' name='firstname' placeholder='Enter your firstname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='middlename' class='col-sm-3 control-label'>Middlename:</label><div class='col-sm-9'><input class='form-control' type='text' id='middlename' name='middlename' placeholder='Enter your middlename here' autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required autocomplete='off'></div></div></div><div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-        else if(type == "External1")
-        {
-          if(transUnitInputtedBy == "Client")
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='externalno' class='col-sm-3 control-label'>Requestor #:</label><div class='col-sm-9'><input class='form-control' type='text' id='externalno' name='externalno' placeholder='Enter your requestor number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='qty_of_unit' class='col-sm-3 control-label'>Quantity ( " + unit + " ):</label><div class='col-sm-9'><input class='form-control' type='number' id='qty_of_unit' name='qty_of_unit' placeholder='Enter quantity here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='externalno' class='col-sm-3 control-label'>Requestor #:</label><div class='col-sm-9'><input class='form-control' type='text' id='externalno' name='externalno' placeholder='Enter your requestor number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lastname' class='col-sm-3 control-label'>Lastname:</label><div class='col-sm-9'><input class='form-control' type='text' id='lastname' name='lastname' placeholder='Enter your lastname here' required autocomplete='off'></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-        else if(type == "Student")
-        {
-          if(transUnitInputtedBy == "Client")
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='studno' class='col-sm-3 control-label'>Student #:</label><div class='col-sm-9'><input class='form-control' type='text' id='studno' name='studno' placeholder='Enter your student number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><div class='col-sm-3'></div><div class='col-sm-9'><div class='form-check'><input class='form-check-input' type='checkbox' value='' id='use_pnu_email'><label class='form-check-label' for='use_pnu_email'>Use PNU Email Instead</label></div></div></div></div> <div class='form-group'><div class='row'><label for='qty_of_unit' class='col-sm-3 control-label'>Quantity ( " + unit + " ):</label><div class='col-sm-9'><input class='form-control' type='number' id='qty_of_unit' name='qty_of_unit' placeholder='Enter quantity here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='studno' class='col-sm-3 control-label'>Student #:</label><div class='col-sm-9'><input class='form-control' type='text' id='studno' name='studno' placeholder='Enter your student number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><div class='col-sm-3'></div><div class='col-sm-9'><div class='form-check'><input class='form-check-input' type='checkbox' value='' id='use_pnu_email'><label class='form-check-label' for='use_pnu_email'>Use PNU Email Instead</label></div></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-        else
-        {
-          if(transUnitInputtedBy == "Client")
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><label for='qty_of_unit' class='col-sm-3 control-label'>Quantity ( " + unit + " ):</label><div class='col-sm-9'><input class='form-control' type='number' id='qty_of_unit' name='qty_of_unit' placeholder='Enter quantity here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-          else
-          {
-            $("#secondform").append("<div class='form-group'><div class='row'><label for='applicantno' class='col-sm-3 control-label'>Applicant #:</label><div class='col-sm-9'><input class='form-control' type='text' id='applicantno' name='applicantno' placeholder='Enter your applicant number here' required></div></div></div> <div class='form-group'><div class='row'><label for='lname' class='col-sm-3 control-label'>Last Name:</label><div class='col-sm-9'><input class='form-control' type='text' id='lname' name='lname' placeholder='Enter your lastname here' required></div></div></div> <div class='form-group'><div class='row'><label for='email' class='col-sm-3 control-label'>Email:</label><div class='col-sm-9'><input class='form-control' type='email' id='email' name='email' placeholder='Enter your email here' required></div></div></div> <div class='form-group'><div class='row'><label for='note' class='col-sm-3 control-label'>Note (optional):</label><div class='col-sm-9'><textarea class='form-control' type='text' id='note' name='note' placeholder='Enter additional notes here' rows='5'></textarea></div></div></div>");
-          }
-        }
-      }
-    }); */
 
     $("#showConfirmation").on('click', function(e){
 

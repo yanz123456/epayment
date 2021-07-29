@@ -39,13 +39,14 @@
                               <thead>
                                 <input type="hidden" class="form-control" id="year" name="year" readonly>
                                 <input type="hidden" class="form-control" id="month" name="month" readonly>
-                                <th>Transaction Name</th>
-                                <th>Office</th>
-                                <th>Note</th>
-                                <th>Price & Unit</th>
-                                <th>Qty</th>
-                                <th>Total Price</th>
-                                <th></th>
+                                <th width="20%">Transaction Name</th>
+                                <th width="10%">Office</th>
+                                <th width="20%">Note</th>
+                                <th width="10%">Price</th>
+                                <th width="10%">Qty of Unit <span id="unitPrice"></span></th>
+                                <th width="10%">No. of Copy(ies)</th>
+                                <th width="10%">Amount</th>
+                                <th width="5%"></th>
                               </thead>
                               <tbody id="transactionList">
                               </tbody>
@@ -60,18 +61,18 @@
                             <h5>Additional Transactions Offered by this Office (Optional)</h5>
                           </div>
                           <div class="box-body">
-                            <table id="example1" class="table table-bordered">
+                            <table id="example2" class="table table-bordered">
                               <thead>
                                 <input type="hidden" class="form-control" id="year" name="year" readonly>
                                 <input type="hidden" class="form-control" id="month" name="month" readonly>
-                                <th>Transaction Name</th>
-                                <th>Office</th>
-                                <th>Note</th>
-                                <th>Price & Unit</th>
-                                <th>Qty</th>
-                                <th>Total Price</th>
-                                <th></th>
+                                <th width="20%">Transaction Name</th>
+                                <th width="20%">Office</th>
+                                <th width="20%">Note</th>
+                                <th width="10%">Price & Unit</th>
+                                <th width="50%"></th>
                               </thead>
+                              <tbody id="loadedTransactions">
+                              </tbody>
                             </table>
                           </div>
                         </div>

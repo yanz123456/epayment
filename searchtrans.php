@@ -13,7 +13,7 @@
         $office_name = $row["office_name"];
         $amount = number_format($row["amount"], 2);
         echo "
-            <div class='col-md-4 d-flex id='transactions'>
+            <div class='col-md-6 d-flex id='transactions'>
             <div class='blog-entry justify-content-end'>
             <div class='text mt-3 float-right'>
                 <h3 id='type' class='heading'>$description</h3>";
