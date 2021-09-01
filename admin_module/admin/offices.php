@@ -59,7 +59,7 @@
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
-                  <th>ID</th>
+                  <th hidden>ID</th>
                   <th>Description</th>
                   <th></th>
                 </thead>
@@ -70,7 +70,7 @@
                     while($row = $query->fetch_assoc()){
                       echo "
                         <tr>
-                          <td>".$row['id']."</td>
+                          <td hidden>".$row['id']."</td>
                           <td>".$row['description']."</td>
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id']."'><i class='fa fa-edit'></i> Edit</button>

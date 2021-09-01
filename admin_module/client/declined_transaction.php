@@ -65,13 +65,14 @@
                   <th>Name</th>
                   <th>Email</th>
                   <th>Remarks</th>
+                  <th>Reason</th>
                   <th>Date</th> 
                 </thead>
                 <tbody id="requests_table">
                   <?php
                     $client_id = $_SESSION['login_id'];
 
-                    $sql = "SELECT a.*, b.* FROM tbl_requests a LEFT JOIN tbl_clients b ON a.`requestor_id` = b.`id` WHERE a.`requestor_id` = '$client_id' AND a.`remarks` = 'Pending' ORDER BY a.`transaction_date` ASC";
+                    $sql = "SELECT a.*, b.* FROM tbl_requests a LEFT JOIN tbl_clients b ON a.`requestor_id` = b.`id` WHERE a.`requestor_id` = '$client_id' AND a.`remarks` = 'Declined' ORDER BY a.`transaction_date` ASC";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc())
                     {
@@ -93,7 +94,7 @@
                       $email = $row['email'];
                       $remarks = $row['remarks'];
                       $transaction_date = date('M d, Y h:i:s A', strtotime($row['transaction_date']));
-                      
+                      $reason_of_decline = $row['reason_of_decline'];
                       echo "
                         <tr id='tr$transaction_id'>
                           <td>$client_type</td>
@@ -102,6 +103,7 @@
                           <td>$full_name</td>
                           <td>$email</td>
                           <td>$remarks</td>
+                          <td>$reason_of_decline</td>
                           <td>$transaction_date</td>
                         </tr>
                       ";

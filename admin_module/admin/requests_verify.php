@@ -6,29 +6,23 @@
     switch($action)
     {
         case 'confirm':
-            $transaction_type = mysqli_real_escape_string($conn, $_POST['type_of_transaction']);
-            $transaction_number = mysqli_real_escape_string($conn, $_POST['transaction_number']);
+            $transaction_id = $_POST["transaction_id"];
+            $total_amount = $_POST["total_amount"];
+            $request_transactions_id = $_POST["request_transactions_id"];
             $datenow = date("Y-m-d H:i:s");
-
-            if ($transaction_type == "Fixed")
-            {
-                $amount = mysqli_real_escape_string($conn, $_POST['amount_to_post']);
-                $sql ="UPDATE tbl_requests SET amount_to_pay = '$amount', accepted_date = '$datenow', remarks = 'Accepted' WHERE transaction_id = '$transaction_number'";
-            }
-            elseif($transaction_type == "Fixed With Unit")
-            {
-                $amount = $_POST["total_amount"];
-                $quantity = $_POST["quantity"];
-                $sql ="UPDATE tbl_requests SET amount_to_pay = '$amount', quantity_of_unit = '$quantity', accepted_date = '$datenow', remarks = 'Accepted' WHERE transaction_id = '$transaction_number'";
-            }
-            else
-            {
-                $amount = $_POST["amount"];
-                $sql ="UPDATE tbl_requests SET amount_to_pay = '$amount', accepted_date = '$datenow', remarks = 'Accepted' WHERE transaction_id = '$transaction_number'";
-            }
-
+            $ta = array_sum($total_amount);
+            $sql ="UPDATE tbl_requests SET remarks = 'Accepted', amount_to_pay = '$ta', accepted_date = '$datenow' WHERE transaction_id = '$transaction_id'";
             if($conn->query($sql))
             {
+                $request_transactions_id = $_POST["request_transactions_id"];
+                $qty_of_inputs = $_POST["qty_of_inputs"];
+
+                for($i = 0; $i < count($request_transactions_id); $i++)
+                {
+                    $sql ="UPDATE tbl_request_transactions SET quantity_of_unit = '$qty_of_inputs[$i]', amount = '$total_amount[$i]' WHERE transaction_id = '$transaction_id' AND request_transactions_id = '$request_transactions_id[$i]'";
+                    $conn->query($sql);
+                }
+
                 $_SESSION['success'] = 'Request updated successfully';
             }
             else{
@@ -36,9 +30,9 @@
             }
         break;
         case 'decline':
-            $transaction_number = mysqli_real_escape_string($conn, $_POST['del_transaction_number']);
+            $transaction_id = mysqli_real_escape_string($conn, $_POST['del_transaction_number']);
             $reason = mysqli_real_escape_string($conn, $_POST['reason']);
-            $sql ="UPDATE tbl_requests SET remarks = 'Declined', reason_of_decline = '$reason' WHERE transaction_id = '$transaction_number'";
+            $sql ="UPDATE tbl_requests SET remarks = 'Declined', reason_of_decline = '$reason' WHERE transaction_id = '$transaction_id'";
             if($conn->query($sql))
             {
                 $_SESSION['success'] = 'Request updated successfully';
@@ -48,6 +42,5 @@
             }
         break;
     }
-	header('location: office_module.php');
-
+    echo "<script>window.location.href='office_module.php';</script>";
 ?>

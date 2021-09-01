@@ -1,6 +1,10 @@
 <?php
 	require_once("../dompdf/dompdf_config.inc.php");
 
+	session_start();
+
+	$transaction_id = $_SESSION["transaction_id"];
+
 	ob_start();
 	include "receiptpdf.php";
 	$html = ob_get_clean();
@@ -10,7 +14,7 @@
 	$dompdf->load_html($html);
 	$dompdf->render();
 	$pdf = $dompdf->output();
-	//$pdfloc = "C:\\BACKUP\\" . "GENERAL PAYROLL " . $daterange . ".pdf";
-	//file_put_contents($pdfloc,$pdf);
+	$pdfloc = $transaction_id.".pdf";
+	file_put_contents($pdfloc,$pdf);
 	$dompdf->stream("receipt.pdf",array('Attachment'=>0));
 ?>

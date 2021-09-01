@@ -30,6 +30,8 @@
     
   </head>
   <body>
+
+    <input type="hidden" name="user_id" id="user_id" value="<?php echo $client["id"];?>">
 	  
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
@@ -222,7 +224,7 @@
         type: 'POST',
         url: 'transaction_details.php',
         data: {id:id},
-        async: false,
+        async: true,
         dataType: 'json',
         success: function(response){
           if(response.error)
@@ -236,44 +238,66 @@
               // Destroy existing table
               $('#example2').DataTable().destroy();
             };
-
-            var cur_date = new Date();
-            var cur_year = cur_date.getFullYear();
-            var cur_month = cur_date.getMonth() + 1;
-            $("#year").val(cur_year);
-            $("#month").val(cur_month);
             $("#transactionList").empty();
             $("#unitPrice").empty();
+            console.log(response);
             if(response.transaction.transaction_type == "Fixed With Unit")
             {
-              $("#unitPrice").html("("+response.transaction.unit+")");
               if (response.transaction.category == "Document")
               {
-                if(response.transaction.no_of_copy == "YES")
+                if(response.transaction.unit_inputted_by == "Office")
                 {
-                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
-                                    "<td>" + response.transaction.office_name + "</td>" +
-                                    "<td>" + response.transaction.note + "</td>" +
-                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
-                                    "<td>To be decided by Office</td>" +
-                                    "<td><input type='number' class='form-control' name='no_copies' min='1' required></td>" +
-                                    "<td>Will be indicated in Order of Payment</td>" +
-                                    "<td></td>" +
-                                  "</tr>";
+                  if(response.transaction.no_of_copy == "YES")
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>To be decided by Office</td>" +
+                                      "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
+                                      "<td></td>" +
+                                    "</tr>";
+                  }
+                  else
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>To be decided by Office</td>" +
+                                      "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>1</td>" +
+                                      "<td></td>" +
+                                    "</tr>";
+                  }
                 }
                 else
                 {
-                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
-                                    "<td>" + response.transaction.office_name + "</td>" +
-                                    "<td>" + response.transaction.note + "</td>" +
-                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
-                                    "<td>To be decided by Office</td>" +
-                                    "<td>1</td>" +
-                                    "<td></td>" +
-                                    "<td></td>" +
-                                  "</tr>";
+                  if(response.transaction.no_of_copy == "YES")
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='number' class='form-control' name='quantity_of_unit[]' min='1' required></td>" +
+                                      "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
+                                      "<td></td>" +
+                                    "</tr>";
+                  }
+                  else
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='number' class='form-control' name='quantity_of_unit[]' min='1' required></td>" +
+                                      "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>1</td>" +
+                                      "<td></td>" +
+                                    "</tr>";
+                  }
                 }
               }
               else
@@ -281,26 +305,24 @@
                 if(response.transaction.unit_inputted_by == "Client")
                 {
                   var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                     "<td>" + response.transaction.office_name + "</td>" +
                                     "<td>" + response.transaction.note + "</td>" +
                                     "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
-                                    "<td><input type='number' class='form-control' name='qty_of_unit' min='1' required></td>" +
-                                    "<td>-</td>" +
-                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td><input type='number' class='form-control' name='quantity_of_unit[]' min='1' required></td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
                                     "<td></td>" +
                                   "</tr>";
                 }
                 else
                 {
                   var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                     "<td>" + response.transaction.office_name + "</td>" +
                                     "<td>" + response.transaction.note + "</td>" +
                                     "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
-                                    "<td>To be decided by Office</td>" +
-                                    "<td>-</td>" +
-                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>To be decided by Office</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
                                     "<td></td>" +
                                   "</tr>";
                 }
@@ -313,26 +335,24 @@
                 if(response.transaction.no_of_copy == "YES")
                 {
                   var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                     "<td>" + response.transaction.office_name + "</td>" +
                                     "<td>" + response.transaction.note + "</td>" +
                                     "<td>Php " + response.transaction.amount + "</td>" +
-                                    "<td>-</td>" +
-                                    "<td><input type='number' class='form-control' name='no_copies' min='1' required></td>" +
-                                    "<td><span id='totalPrice'></span></td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
                                     "<td></td>" +
                                   "</tr>";
                 }
                 else
                 {
                   var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                     "<td>" + response.transaction.office_name + "</td>" +
                                     "<td>" + response.transaction.note + "</td>" +
                                     "<td>Php " + response.transaction.amount + "</td>" +
-                                    "<td>-</td>" +
-                                    "<td>1</td>" +
-                                    "<td>Php " + response.transaction.amount + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>1</td>" +
                                     "<td></td>" +
                                   "</tr>";
                 }
@@ -340,13 +360,12 @@
               else
               {
                 var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                  "<td>" + response.transaction.description + "</td>" +
+                                  "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                   "<td>" + response.transaction.office_name + "</td>" +
                                   "<td>" + response.transaction.note + "</td>" +
                                   "<td>Php " + response.transaction.amount + "</td>" +
-                                  "<td>-</td>" +
-                                  "<td>-</td>" +
-                                  "<td>Php " + response.transaction.amount + "</td>" +
+                                  "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                  "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
                                   "<td></td>" +
                                 "</tr>";
               }
@@ -358,26 +377,24 @@
                 if(response.transaction.no_of_copy == "YES")
                 {
                   var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                     "<td>" + response.transaction.office_name + "</td>" +
                                     "<td>" + response.transaction.note + "</td>" +
                                     "<td>Will be indicated in Order of Payment</td>" +
-                                    "<td>-</td>" +
-                                    "<td><input type='number' class='form-control' name='no_copies' min='1' required></td>" +
-                                    "<td>Will be indicated in Order of Payment</span></td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
                                     "<td></td>" +
                                   "</tr>";
                 }
                 else
                 {
                   var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                     "<td>" + response.transaction.office_name + "</td>" +
                                     "<td>" + response.transaction.note + "</td>" +
                                     "<td>Will be indicated in Order of Payment</td>" +
-                                    "<td>-</td>" +
-                                    "<td>-</td>" +
-                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
                                     "<td></td>" +
                                   "</tr>";
                 }
@@ -385,17 +402,17 @@
               else
               {
                 var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
-                                    "<td>" + response.transaction.description + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
                                     "<td>" + response.transaction.office_name + "</td>" +
                                     "<td>" + response.transaction.note + "</td>" +
                                     "<td>Will be indicated in Order of Payment</td>" +
-                                    "<td>-</td>" +
-                                    "<td>-</td>" +
-                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
                                     "<td></td>" +
                                   "</tr>";
               }
             }
+
             $("#transactionList").append(appendrow);
 
             $("#loadedTransactions").empty();
@@ -410,7 +427,7 @@
                                   "<td>" + response.loadedTransaction[i].office_name + "</td>" +
                                   "<td>" + response.loadedTransaction[i].note + "</td>" +
                                   "<td>Will be indicated in Order of Payment</td>" +
-                                  "<td><button type='button' class='btn btn-primary add' name='add'>ADD</button></td>" +
+                                  "<td><button type='button' class='btn btn-primary btn-block add' name='add'>ADD</button></td>" +
                                 "</tr>";
                 $("#loadedTransactions").append(appendrow2);
               });
@@ -421,25 +438,214 @@
             {
               $('#example2').DataTable().draw();
             }
-
-            /* $("#transcode").val(response.account_code);
-            $("#transtype").val(response.description);
-            if(response.transaction_type == "Fixed With Unit")
-            {
-              $("#transamount").val(response.amount + " " + response.unit);
-            }
-            else
-            {
-              $("#transamount").val(response.amount);
-            }
-            unit = response.unit;
-            $("#transoffice").val(response.office_name);
-            $("#transCategory").val(response.category);
-            $("#transUnitInputtedBy").val(response.unit_inputted_by);
-            $("#transNoOfCopy").val(response.no_of_copy); */
           }
         }
       });
+    });
+
+    $('#example2').on('click', '.add', function (e) {
+      e.preventDefault();
+      var id = $(this).closest("tr").attr("id");
+
+      $.ajax({
+        type: 'POST',
+        url: 'add_transaction.php',
+        data: {id:id},
+        async: false,
+        dataType: 'json',
+        success: function(response){
+          if(response.error)
+          {
+            alert(response.message);
+          }
+          else
+          {
+            if(response.transaction.transaction_type == "Fixed With Unit")
+            {
+              if (response.transaction.category == "Document")
+              {
+                if(response.transaction.unit_inputted_by == "Office")
+                {
+                  if(response.transaction.no_of_copy == "YES")
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>To be decided by Office</td>" +
+                                      "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
+                                      "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                    "</tr>";
+                  }
+                  else
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>To be decided by Office</td>" +
+                                      "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>1</td>" +
+                                      "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                    "</tr>";
+                  }
+                }
+                else
+                {
+                  if(response.transaction.no_of_copy == "YES")
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='number' class='form-control' name='quantity_of_unit[]' min='1' required></td>" +
+                                      "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
+                                      "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                    "</tr>";
+                  }
+                  else
+                  {
+                    var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                      "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                      "<td>" + response.transaction.office_name + "</td>" +
+                                      "<td>" + response.transaction.note + "</td>" +
+                                      "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                      "<td><input type='number' class='form-control' name='quantity_of_unit[]' min='1' required></td>" +
+                                      "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>1</td>" +
+                                      "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                    "</tr>";
+                  }
+                }
+              }
+              else
+              {
+                if(response.transaction.unit_inputted_by == "Client")
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                    "<td><input type='number' class='form-control' name='quantity_of_unit[]' min='1' required></td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
+                                    "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                  "</tr>";
+                }
+                else
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + " " +  response.transaction.unit + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>To be decided by Office</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
+                                    "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                  "</tr>";
+                }
+              }
+            }
+            else if(response.transaction.transaction_type == "Fixed")
+            {
+              if (response.transaction.category == "Document")
+              {
+                if(response.transaction.no_of_copy == "YES")
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
+                                    "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                  "</tr>";
+                }
+                else
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Php " + response.transaction.amount + "</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>1</td>" +
+                                    "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                  "</tr>";
+                }
+              }
+              else
+              {
+                var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                  "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                  "<td>" + response.transaction.office_name + "</td>" +
+                                  "<td>" + response.transaction.note + "</td>" +
+                                  "<td>Php " + response.transaction.amount + "</td>" +
+                                  "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                  "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
+                                  "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                "</tr>";
+              }
+            }
+            else
+            {
+              if (response.transaction.category == "Document")
+              {
+                if(response.transaction.no_of_copy == "YES")
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='number' class='form-control' name='no_of_copies[]' min='1' required></td>" +
+                                    "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                  "</tr>";
+                }
+                else
+                {
+                  var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
+                                    "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                  "</tr>";
+                }
+              }
+              else
+              {
+                var appendrow = "<tr id='" + response.transaction.account_code + "'>" +
+                                    "<td><input type='hidden' class='form-control' name='account_code[]' value='" + response.transaction.account_code + "'>" + response.transaction.description + "</td>" +
+                                    "<td>" + response.transaction.office_name + "</td>" +
+                                    "<td>" + response.transaction.note + "</td>" +
+                                    "<td>Will be indicated in Order of Payment</td>" +
+                                    "<td><input type='hidden' class='form-control' name='quantity_of_unit[]' value='1'>-</td>" +
+                                    "<td><input type='hidden' class='form-control' name='no_of_copies[]' value='1'>-</td>" +
+                                    "<td><button type='button' class='btn btn-danger btn-block remove' name='remove'>X</button></td>" +
+                                  "</tr>";
+              }
+            }
+            $("#transactionList").append(appendrow);
+          }
+        }
+      });
+
+     $(this).html("ADDED ON THE LIST");
+     $(this).prop("disabled", true);
+    });
+
+    $('#example1').on('click', '.remove', function (e) {
+      e.preventDefault();
+      var id = $(this).closest("tr").attr("id");
+      $("#loadedTransactions").find("tr[id="+id+"] button").html("ADD");
+      $("#loadedTransactions").find("tr[id="+id+"] button").prop("disabled", false);
+      $(this).closest("tr").remove();
     });
 
     $('#logout').on('click', function (e) 
@@ -449,8 +655,7 @@
 
     $('#checkyourtransaction').on('click', function (e) 
     {
-      e.preventDefault();
-      $('#checkTransaction').modal('show');
+      window.open("admin_module/client/home.php", '_self');
     });
 
     $('#searchtransaction').on('click', function (e) 
@@ -507,6 +712,79 @@
       }
     });
 
+    $("#transactionForm").on( "submit", function( event ) {
+
+      var formData = new FormData($(this)[0]);
+      $.ajax({
+        url: 'ajax/fetch_transactions_amount.php',
+        type: 'POST',
+        data: formData,
+        async: true,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+        success: function(response){
+          if(response.error)
+          {
+            alert(response.message);
+          }
+          else
+          {
+            $('#carouselModal').modal('hide');
+            console.log(response)
+            var cur_date = new Date();
+            var cur_year = cur_date.getFullYear();
+            var cur_month = cur_date.getMonth() + 1;
+            $("#trans_user_id").val($("#user_id").val());
+            $("#year").val(cur_year);
+            $("#month").val(cur_month);
+            $("#confirmation_table tbody").empty();
+            if($.trim(response.account_code))
+            {
+              $.each(response.account_code, function(i, item)
+              {
+                if(response.amount[i] == null)
+                {
+                  appendrow = "<tr>" +
+                                "<td><input type='hidden' name='confirmation_account_code[]' value='" + response.account_code[i] + "'>" + response.description[i] + "</td>" +
+                                "<td>" + response.office[i] + "</td>" +
+                                "<td>" + response.note[i] + "</td>" +
+                                "<td>-</td>" +
+                                "<td><input type='hidden' name='confirmation_quantity_of_unit[]' value='" + response.quantity_of_unit[i] + "'>" + response.quantity_of_unit[i] + "</td>" +
+                                "<td><input type='hidden' name='confirmation_no_of_copies[]' value='" + response.no_of_copies[i] + "'>" + response.no_of_copies[i] + "</td>" +
+                              "</tr>";
+                }
+                else
+                {
+                  appendrow = "<tr>" +
+                              "<td><input type='hidden' name='confirmation_account_code[]' value='" + response.account_code[i] + "'>" + response.description[i] + "</td>" +
+                              "<td>" + response.office[i] + "</td>" +
+                              "<td>" + response.note[i] + "</td>" +
+                              "<td>Php " + response.amount[i] + "</td>" +
+                              "<td><input type='hidden' name='confirmation_quantity_of_unit[]' value='" + response.quantity_of_unit[i] + "'>" + response.quantity_of_unit[i] + "</td>" +
+                              "<td><input type='hidden' name='confirmation_no_of_copies[]' value='" + response.no_of_copies[i] + "'>" + response.no_of_copies[i] + "</td>" +
+                            "</tr>";
+                }
+                $("#totalAmount").html(response.total_amount);
+                $("#confirmation_table tbody").append(appendrow);
+              });
+            }
+
+            setTimeout(function() {
+              $('#confirmationModal').modal({
+                  backdrop: 'static'//to disable click close
+                })
+              }, 400);//delay in miliseconds##1000=1second
+            
+          }
+        }
+      });
+
+      return false;
+
+    });
+
     $("#showConfirmation").on('click', function(e){
 
       $('#carouselModal').modal('hide');
@@ -540,48 +818,6 @@
         })
       }, 400);//delay in miliseconds##1000=1second
 
-    });
-
-    $("#proceedButton").on('click', function(e)
-    {
-      map.clear();
-      if($("#client_type")[0].checkValidity())
-      {
-        if($("#transactionForm")[0].checkValidity())
-        {
-          if($("#transCategory").val() == "Document")
-          {
-            if($("#client_type").val() == "Student")
-            {
-              if($("#use_pnu_email").is(':checked'))
-              {
-                $("#transactionForm input[type=text], #transactionForm #transcode, #transactionForm input[type=email], #transactionFrom input[type=number], #transactionForm textarea, #transactionForm select").each(function()
-                {
-                  map.set($(this).attr("id"), $(this).val());
-                });
-                //console.log(map);
-                // let keys = Array.from(map.keys());
-                // for(let i = 0; i < keys.length; i++){
-                //   alert(keys[i]);
-                // }
-
-                let values = Array.from(map.values());
-                for(let i = 0; i < values.length; i++){
-                  alert(values[i]);
-                }
-              }
-            }
-          }
-        }
-        else
-        {
-          $("#transactionForm")[0].reportValidity();
-        }
-      }
-      else
-      {
-        $("#client_type")[0].reportValidity()
-      }
     });
 
     $(document).on('click', '#use_pnu_email', function (e) {

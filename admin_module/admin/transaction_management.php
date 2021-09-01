@@ -11,6 +11,10 @@
     }
 </style>
 
+<?php 
+    
+?>
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -22,11 +26,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pending Transactions
+        Transaction Management
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Manage</a></li>
-        <li class="active">Transactions</li>
+        <li class="active">Transaction Management</li>
       </ol>
     </section>
     <!-- Main content -->
@@ -57,7 +61,16 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
-              <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> Upload Landbank File</a>
+              <form action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
+                <div class="col-md-3">
+                    <label>Import File:</label>
+                    <input class="form-control" type="file" name="file" id="file" accept=".csv" required/>
+                </div>
+                <div class="col-md-3">
+                    <label style="color:white;">-</label>
+                    <button class='btn btn-success form-control btn-submit' id="import" name="import" style="font-weight: bold">UPLOAD</button>
+                </div>
+              </form>
             </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered">
@@ -88,54 +101,25 @@
 <?php include 'includes/scripts.php'; ?>
 <script>
 $(function(){
-  $('#example1').on('click', '.edit', function (e) {
-    e.preventDefault();
-    var id = $(this).data('id');
-    getRow(id);
-    $('#editnew').modal('show');
+  $("#import").on("click", function () {
+      alert("The system is now trying to validate the process.\nPlease wait for the page to load again.");
+      $("#frmCSVImport").submit();
   });
 
-  $('#example1').on('click', '.delete', function (e) {
-    e.preventDefault();
-    var id = $(this).data('id');
-    getRow(id);
-    $('#delete').modal('show');
+  $("#frmCSVImport").on("submit", function () {
+      $("#response").attr("class", "");
+      $("#response").html("");
+      var fileType = ".csv";
+      var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + fileType + ")$");
+      if (!regex.test($("#file").val().toLowerCase())) {
+              $("#response").addClass("error");
+              $("#response").addClass("display-block");
+          $("#response").html("Invalid File. Upload: <b>" + fileType + "</b> File(s) Only.");
+          return false;
+      }
+      return true;
   });
-
-  $('#trans_type').on('change', function (e) {
-    e.preventDefault();
-    $("#dynamicinputs").empty();
-    var transtype = $(this).val();
-    if(transtype == "Fixed")
-    {
-      $("#dynamicinputs").append("<div class='form-group'><label for='title' class='col-sm-3 control-label'>Amount:</label><div class='col-sm-9'><input type='text' class='form-control' id='amount' name='amount' required autocomplete='off'></div></div>")
-    }
-    else if(transtype == "Fixed With Unit")
-    {
-      $("#dynamicinputs").append("<div class='form-group'><label for='title' class='col-sm-3 control-label'>Amount:</label><div class='col-sm-9'><input type='text' class='form-control' id='amount' name='amount' required autocomplete='off'></div></div> <div class='form-group'><label for='title' class='col-sm-3 control-label'>Unit:</label><div class='col-sm-9'><select class='form-control' name='unit' required><option disabled hidden selected value=''>--Select Unit--</option><option value='per page'>per page</option><option value='per item'>per item</option></select></div></div>")
-    }
-  });
-
 });
-
-function getRow(id){
-  $.ajax({
-    type: 'POST',
-    url: 'transaction_row.php',
-    data: {id:id},
-    dataType: 'json',
-    success: function(response){
-      $('#editaccount_code').val(response.account_code);
-      $('#editdescription').val(response.description);
-      $('#editamount').val(response.amount);
-      $('#editoffice').val(response.office_id);
-
-      $('#del_account_code').val(response.account_code);
-      $('#del_account_code1').html(response.account_code);
-      $('#del_account_description').html(response.description);
-    }
-  });
-}
 </script>
 </body>
 </html>

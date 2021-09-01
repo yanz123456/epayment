@@ -1,7 +1,7 @@
 <?php
 
   $office_id = $_SESSION['office_id'];
-  $sql = "SELECT COUNT(a.transaction_id) as pending_cnt FROM tbl_requests a LEFT JOIN tbl_transactions b ON a.`account_code` = b.account_code LEFT JOIN tbl_offices c ON b.office_id = c.id WHERE b.office_id = '$office_id' AND a.remarks = 'Pending' ORDER BY a.transaction_date ASC";
+  $sql = "SELECT COUNT(a.transaction_id) as pending_cnt FROM tbl_requests a LEFT JOIN tbl_offices b ON a.transaction_office_id = b.id WHERE b.id = '$office_id' AND a.remarks = 'Pending' ORDER BY a.transaction_date ASC";
   $query = $conn->query($sql);
   $row = $query->fetch_assoc();
   $pending_cnt = $row["pending_cnt"];
@@ -33,6 +33,7 @@
           </a>
         </li>
         <li class=""><a href="office_accepted_transactions.php"><i class="fa fa-circle-o"></i> <span>Accepted Transactions</span></a></li>
+        <li class=""><a href="office_declined_transactions.php"><i class="fa fa-circle-o"></i> <span>Declined Transactions</span></a></li>
         <!--<li class=""><a href="office_completed_transactions.php"><i class="fa fa-circle-o"></i> <span>Transactions Table</span></a></li>-->
       </ul>
     </section>

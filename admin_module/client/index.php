@@ -33,8 +33,8 @@ include 'includes/header.php';
       			<div class="col-xs-12">
                 <button type="submit" class="btn btn-primary btn-block btn-flat" name="login"><i class="fa fa-sign-in"></i> Sign In</button>
 				<i> First time to request? Fill up form <a href="register.php">here</a></i>
-				<br>
-				<i> Forgotten your password? Click <a href="register.php">here</a></i>
+				<!-- <br>
+				<i> Forgotten your password? Click <a href="register.php">here</a></i> -->
         		</div>
       		</div>
     	</form>

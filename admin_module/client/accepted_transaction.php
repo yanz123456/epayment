@@ -65,13 +65,14 @@
                   <th>Name</th>
                   <th>Email</th>
                   <th>Remarks</th>
-                  <th>Date</th> 
+                  <th>Date</th>
+                  <th width="10%"></th>
                 </thead>
                 <tbody id="requests_table">
                   <?php
                     $client_id = $_SESSION['login_id'];
 
-                    $sql = "SELECT a.*, b.* FROM tbl_requests a LEFT JOIN tbl_clients b ON a.`requestor_id` = b.`id` WHERE a.`requestor_id` = '$client_id' AND a.`remarks` = 'Pending' ORDER BY a.`transaction_date` ASC";
+                    $sql = "SELECT a.*, b.* FROM tbl_requests a LEFT JOIN tbl_clients b ON a.`requestor_id` = b.`id` WHERE a.`requestor_id` = '$client_id' AND a.`remarks` = 'Accepted' ORDER BY a.`transaction_date` ASC";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc())
                     {
@@ -103,6 +104,7 @@
                           <td>$email</td>
                           <td>$remarks</td>
                           <td>$transaction_date</td>
+                          <td><button class='col-xs-12 btn btn-primary btn-sm view btn-flat' data-transaction_id='$transaction_id'><i class='fa fa-eye'></i> View Order of Payment</button></td>
                         </tr>
                       ";
                     }
@@ -120,6 +122,16 @@
 </div>
 <?php include 'includes/scripts.php'; ?>
 <script>
+
+$(function()
+{
+    $(document).on('click', '.view', function(e){
+        var transaction_id = $(this).data("transaction_id");
+        window.open("../../reports/referencereceiptinit.php?transaction_id=" + transaction_id, '_blank');
+    });
+
+});
+
 </script>
 </body>
 </html>

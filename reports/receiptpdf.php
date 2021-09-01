@@ -1,16 +1,36 @@
-<?php 
-			date_default_timezone_set('Asia/Singapore');
-			$referencenumber = "613CLST20216-000001";
-			$amounttobepaid = 50;
-			$term = $_GET['term'];
-			$schoolyear = $_GET['schoolyear'];
-			$typeoftransaction = $_GET['typeoftransaction'];
-			$studentnumber = "201210549";
-			$studentname = "Tamares, Bryan Lester D.";
+<?php
+	include '../admin_module/client/includes/session.php';
+	include '../admin_module/admin/includes/conn.php';
+	date_default_timezone_set('Asia/Singapore');
+	$transaction_id = $_GET['transaction_id'];
+	$amounttobepaid;
+	$studentnumber;
+	$studentname;
 
+	$sql = "SELECT a.*, b.* FROM tbl_requests a LEFT JOIN tbl_clients b ON a.`requestor_id` = b.`id` WHERE a.`transaction_id` = '$transaction_id' AND a.`remarks` = 'Accepted' ORDER BY a.`transaction_date` ASC";
+	$query = $conn->query($sql);
+	while($row = $query->fetch_assoc())
+	{
+		$client_type = $row["client_type"];
+		$amounttobepaid = $row["amount_to_pay"];
+		if($client_type == "Student")
+		{
+			$studentnumber = $row["student_number"];
+		}
+		elseif($client_type == "Applicant")
+		{
+			$studentnumber = $row["applicant_number"];
+		}
+		else
+		{
+			$studentnumber = "External Client";
+		}
+		$studentname = $row["lastname"].", ".$row["firstname"]." ".$row["middlename"];
+	}
 
+	
 
-			// Create a function for converting the amount in words
+// Create a function for converting the amount in words
 function numberTowords($amount)
 {
    $amount_after_decimal = round($amount - ($num = floor($amount)), 2) * 100;
@@ -72,7 +92,7 @@ function numberTowords($amount)
 			</tr>
 			<tr>
 				<td colspan="4" style='font-size:15px;text-align: right;'>
-					<b style="font-size: 35px;"><?php echo $referencenumber ?></b>
+					<b style="font-size: 35px;"><?php echo $transaction_id ?></b>
 					<br>
 					E-Services Transaction Reference Number
 					<br>
@@ -200,7 +220,7 @@ function numberTowords($amount)
 				<td colspan="2" style="text-align: center;">
 					SCAN THIS QR CODE
 					<br>
-					FOR THE STEPS ONLINE
+					FOR THE LINK OF LANDBANK E-BIZ
 				</td>
 				<td colspan="2" style="text-align: right;">
 					Amount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -258,6 +278,14 @@ function numberTowords($amount)
 			<tr>
 				<td colspan="2" style="text-align: center;vertical-align: top;">
 					(Accounting Office)
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: left;vertical-align: top;">
+					Steps:<br>
+					1. Scan the qr for the link of e-biz.<br>
+					2. Provide the information needed in E-biz using information given in this Order of Payment.<br>
+					3. You will receive an email once payment has been acknowledged.
 				</td>
 			</tr>
 		</table>

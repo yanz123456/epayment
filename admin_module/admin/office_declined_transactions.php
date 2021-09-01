@@ -1,32 +1,22 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
 
-<style>
-    table {
-    table-layout: fixed ;
-    width: 100% ;
-    }
-    td {
-    width: 25% ;
-    }
-</style>
-
-<body class="hold-transition skin-green sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
-  <?php include 'includes/menubar.php'; ?>
+  <?php include 'includes/menubar_office.php'; ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        My Pending Transactions
+        Accepted Transactions
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active">Pending Transactions</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Manage</a></li>
+        <li class="active">Accepted Transactions</li>
       </ol>
     </section>
     <!-- Main content -->
@@ -56,6 +46,8 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
+            <div class="box-header with-border">
+            </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
@@ -65,13 +57,13 @@
                   <th>Name</th>
                   <th>Email</th>
                   <th>Remarks</th>
-                  <th>Date</th> 
+                  <th>Date</th>
                 </thead>
                 <tbody id="requests_table">
                   <?php
-                    $client_id = $_SESSION['login_id'];
+                    $office_id = $_SESSION['office_id'];
 
-                    $sql = "SELECT a.*, b.* FROM tbl_requests a LEFT JOIN tbl_clients b ON a.`requestor_id` = b.`id` WHERE a.`requestor_id` = '$client_id' AND a.`remarks` = 'Pending' ORDER BY a.`transaction_date` ASC";
+                    $sql = "SELECT a.*, b.* FROM tbl_requests a LEFT JOIN tbl_clients b ON a.`requestor_id` = b.`id` WHERE a.`transaction_office_id` = '$office_id' AND a.`remarks` = 'Declined' ORDER BY a.`transaction_date` ASC";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc())
                     {
@@ -117,9 +109,8 @@
   </div>
     
   <?php include 'includes/footer.php'; ?>
+  <?php include 'includes/transaction_modal.php'; ?>
 </div>
 <?php include 'includes/scripts.php'; ?>
-<script>
-</script>
 </body>
 </html>
