@@ -14,7 +14,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="color: black;">
         <form id="transactionForm" method="POST" autocomplete="no">
           <div class="form-group">
             <div class="box-body">
@@ -84,7 +84,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="color: black;">
         <form action="ajax/add_request.php" method="POST" autocomplete="no">
           <div class="row">
             <div class="col-lg-12">
@@ -103,9 +103,6 @@
                 <tbody>
                 </tbody>
               </table>
-            </div>
-            <div class="col-lg-12">
-            <p style="text-align: right;font-size: 1.2em; font-weight: bold;">Total Amount: <span id="totalAmount"></span></p>
             </div>
             <div class="col-lg-12">
             <p style="color:red;"><i>Note: Please be informed that this might take 2-3 days to be processed by the concerned office. You will receive an email for the result of your request.</i></p>

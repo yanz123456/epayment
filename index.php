@@ -224,7 +224,7 @@
         type: 'POST',
         url: 'transaction_details.php',
         data: {id:id},
-        async: true,
+        async: false,
         dataType: 'json',
         success: function(response){
           if(response.error)
@@ -766,7 +766,6 @@
                               "<td><input type='hidden' name='confirmation_no_of_copies[]' value='" + response.no_of_copies[i] + "'>" + response.no_of_copies[i] + "</td>" +
                             "</tr>";
                 }
-                $("#totalAmount").html(response.total_amount);
                 $("#confirmation_table tbody").append(appendrow);
               });
             }

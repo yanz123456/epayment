@@ -61,7 +61,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
-              <form action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
+              <form action="upload_file.php" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
                 <div class="col-md-3">
                     <label>Import File:</label>
                     <input class="form-control" type="file" name="file" id="file" accept=".csv" required/>
@@ -75,17 +75,58 @@
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
-                  <th>Student #</th>
+                  <th>Transaction #</th>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Account Code</th>
-                  <th>Transaction</th>
+                  <th>Client Type</th>
                   <th>Amount</th>
-                  <th>Office</th>
-                  <th>Remarks</th>
-                  <th></th>
+                  <th>Date of Payment</th>
+                  <th>Date of Import</th>
                 </thead>
                 <tbody>
+                  <?php
+                    $sql = "SELECT 
+                    a.transaction_id,
+                    b.requestor_id,
+                    CONCAT(
+                      c.lastname,
+                      ', ',
+                      c.firstname,
+                      ' ',
+                      c.middlename
+                    ) AS fullname,
+                    c.email,
+                    c.client_type,
+                    a.amount_paid,
+                    a.date_of_payment,
+                    a.date_of_import
+                    FROM tbl_payments a
+                    LEFT JOIN tbl_requests b ON a.`transaction_id` = b.`transaction_id`
+                    LEFT JOIN tbl_clients c ON b.`requestor_id` = c.`id`
+                    WHERE a.`status` = 'pending'";
+                    $query = $conn->query($sql);
+                    while($row = $query->fetch_assoc())
+                    {
+                      $transaction_id = $row['transaction_id'];
+                      $fullname = $row['fullname'];
+                      $email = $row['email'];
+                      $client_type = $row['client_type'];
+                      $amount_paid = $row['amount_paid'];
+                      $date_of_payment = $row['date_of_payment'];
+                      $date_of_import = $row['date_of_import'];
+                      echo "
+                        <tr>
+                          <td>$transaction_id</td>
+                          <td>$fullname</td>
+                          <td>$email</td>
+                          <td>$client_type</td>
+                          <td align='right'>Php $amount_paid</td>
+                          <td>$date_of_payment</td>
+                          <td>$date_of_import</td>
+                        </tr>
+                      ";
+                    }
+                  ?>
                 </tbody>
               </table>
             </div>
@@ -101,24 +142,6 @@
 <?php include 'includes/scripts.php'; ?>
 <script>
 $(function(){
-  $("#import").on("click", function () {
-      alert("The system is now trying to validate the process.\nPlease wait for the page to load again.");
-      $("#frmCSVImport").submit();
-  });
-
-  $("#frmCSVImport").on("submit", function () {
-      $("#response").attr("class", "");
-      $("#response").html("");
-      var fileType = ".csv";
-      var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + fileType + ")$");
-      if (!regex.test($("#file").val().toLowerCase())) {
-              $("#response").addClass("error");
-              $("#response").addClass("display-block");
-          $("#response").html("Invalid File. Upload: <b>" + fileType + "</b> File(s) Only.");
-          return false;
-      }
-      return true;
-  });
 });
 </script>
 </body>

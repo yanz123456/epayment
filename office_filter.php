@@ -14,6 +14,7 @@
             $description = $row["description"];
             $office_name = $row["office_name"];
             $amount = number_format($row["amount"], 2);
+            $unit = $row["unit"];
             echo "
                 <div class='col-md-6 d-flex id='transactions'>
                 <div class='blog-entry justify-content-end'>
@@ -68,17 +69,5 @@
 <script>
 $(function()
 {
-  $('.request').on('click', function (e) 
-  {
-    e.preventDefault();
-    var transtype = $(this).closest("#transactions").find("#type").text();
-    var transamount = $(this).closest("#transactions").find("#amount").text();
-    var transoffice = $(this).closest("#transactions").find("#office").text();
-    alert(transamount);
-    $("#transtype").val(transtype);
-    $("#transamount").val(transamount.split(": ").pop());
-    $("#transoffice").val(transoffice.split(": ").pop());
-  });
-
 });
 </script>
